@@ -32,7 +32,7 @@ function App() {
                 </Route>
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />s
+                <Route path="/forgot-password" element={<ForgotPassword />} />
               </Routes>
             </Fragment>
           </BrowserRouter>
