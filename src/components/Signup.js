@@ -1,24 +1,34 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  Alert,
+  FloatingLabel,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { onSnapshot, collection, getDocs, query } from "firebase/firestore";
+import { onSnapshot, collection, setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
 export default function Signup() {
+  const fnameRef = useRef();
+  const lnameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const teamRef = useRef();
-  const countryRef = useRef();
+  const baseRef = useRef();
+
   const { signup } = useAuth();
+  const navigate = useNavigate();
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [teams, setTeams] = useState([{ name: "Loading...", id: "initial" }]);
-  const [countries, setCountries] = useState([
-    { name: "Loading...", id: "initial" },
-  ]);
-  const navigate = useNavigate();
+  const [bases, setBases] = useState([{ name: "Loading...", id: "initial" }]);
 
   useEffect(
     () =>
@@ -30,10 +40,8 @@ export default function Signup() {
 
   useEffect(
     () =>
-      onSnapshot(collection(db, "countries"), (snapshot) =>
-        setCountries(
-          snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        )
+      onSnapshot(collection(db, "bases"), (snapshot) =>
+        setBases(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
       ),
     []
   );
@@ -48,7 +56,19 @@ export default function Signup() {
     try {
       setError("");
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      const userCred = await signup(
+        emailRef.current.value,
+        passwordRef.current.value
+      );
+      await setDoc(doc(db, "users", userCred.user.uid), {
+        fname: fnameRef.current.value,
+        lname: lnameRef.current.value,
+        email: emailRef.current.value,
+        role: "Director",
+        team: teamRef.current.value,
+        base: baseRef.current.value,
+      });
+
       navigate("/");
     } catch {
       setError("Failed to create an account");
@@ -63,41 +83,96 @@ export default function Signup() {
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
+            <Row className="">
+              <Form.Group as={Col} md="6" controlId="fname_col" required>
+                <FloatingLabel
+                  controlId="fname_input"
+                  label="First Name"
+                  className="mb-2 mt-2"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    ref={fnameRef}
+                    placeholder="First Name"
+                  />
+                </FloatingLabel>
+              </Form.Group>
+              <Form.Group as={Col} md="6" controlId="lname_col" required>
+                <FloatingLabel
+                  controlId="lname_input"
+                  label="Last Name"
+                  className="mb-2 mt-2"
+                >
+                  <Form.Control
+                    required
+                    type="text"
+                    ref={lnameRef}
+                    placeholder="Last Name"
+                  />
+                </FloatingLabel>
+              </Form.Group>
+            </Row>
             <Form.Group id="email" className="mt-2">
-              <Form.Label>Work Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <FloatingLabel
+                controlId="email_input"
+                label="Work Email"
+                className="mb-3"
+              >
+                <Form.Control type="email" ref={emailRef} required />
+              </FloatingLabel>
             </Form.Group>
             <Form.Group id="password" className="mt-2">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <FloatingLabel
+                controlId="password_input"
+                label="Password"
+                className="mb-3"
+              >
+                <Form.Control type="password" ref={passwordRef} required />
+              </FloatingLabel>
             </Form.Group>
             <Form.Group id="password-confirm" className="mt-2">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" ref={passwordConfirmRef} required />
-            </Form.Group>
-            <Form.Group className="mt-2">
-              <Form.Label>Select Country</Form.Label>
-              <Form.Select
-                aria-label="select-country"
-                ref={countryRef}
-                required
+              <FloatingLabel
+                controlId="confirm_password_input"
+                label="Confirm Password"
+                className="mb-3"
               >
-                {countries.map((country, i) => (
-                  <option key={i} value={country.id}>
-                    {country.name} [{country.region}]
-                  </option>
-                ))}
-              </Form.Select>
+                <Form.Control
+                  type="password"
+                  ref={passwordConfirmRef}
+                  required
+                />
+              </FloatingLabel>
             </Form.Group>
             <Form.Group className="mt-2">
-              <Form.Label>Select Team</Form.Label>
-              <Form.Select aria-label="select-team" ref={teamRef} required>
-                {teams.map((team, i) => (
-                  <option key={i} value={team.id}>
-                    {team.name}
-                  </option>
-                ))}
-              </Form.Select>
+              <FloatingLabel
+                controlId="team_input"
+                label="Team"
+                className="mb-3"
+              >
+                <Form.Select aria-label="select-team" ref={teamRef} required>
+                  {teams.map((team, i) => (
+                    <option key={i} value={team.id}>
+                      {team.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
+            </Form.Group>
+            <Form.Group className="mt-2">
+              <FloatingLabel
+                controlId="base_input"
+                label="Base Location"
+                className="mb-3"
+              >
+                <Form.Select aria-label="select-base" ref={baseRef} required>
+                  {bases.map((base, i) => (
+                    <option key={i} value={base.id}>
+                      {base.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </FloatingLabel>
             </Form.Group>
             <Button disabled={loading} className="w-100 mt-4" type="submit">
               Sign Up

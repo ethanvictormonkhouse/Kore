@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, getDocs, query } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,20 +15,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
-// async function getTeams() {
-//   let teams = [];
-//   try {
-//     const q = query(collection(db, "teams"));
-//     const querySnapshot = await getDocs(q);
-//     querySnapshot.forEach((doc) => {
-//       teams.push(doc.data().name);
-//     });
-//   } catch (err) {
-//     console.error(err);
-//   }
-//   return teams;
-// }
 
 export { auth, db };
 export default app;
