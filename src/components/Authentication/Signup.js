@@ -61,7 +61,6 @@ export default function Signup() {
         emailRef.current.value,
         passwordRef.current.value
       );
-      navigate("/");
       await setDoc(doc(db, "users", userCred.user.uid), {
         fname: fnameRef.current.value,
         lname: lnameRef.current.value,
@@ -69,6 +68,8 @@ export default function Signup() {
         role: "Director",
         team: teamRef.current.value,
         base: baseRef.current.value,
+      }).then(() => {
+        navigate("/");
       });
     } catch {
       setError("Failed to create an account");
