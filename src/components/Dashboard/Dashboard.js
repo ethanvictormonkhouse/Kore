@@ -12,7 +12,6 @@ export default function Dashboard() {
 
   async function handleLogout() {
     setError("");
-
     try {
       await logout();
       navigate("/login");
@@ -20,6 +19,7 @@ export default function Dashboard() {
       setError("Failed to log out");
     }
   }
+
   return (
     <>
       <Container

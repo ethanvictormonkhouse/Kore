@@ -29,7 +29,7 @@ export default function Login() {
           navigate("/");
         }
       );
-    } catch {
+    } catch (err) {
       setError("Failed to log in");
     }
     setLoading(false);

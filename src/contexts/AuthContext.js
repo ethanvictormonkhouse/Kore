@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState, useEffect } from "react";
+import React, { useContext, createContext, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -9,8 +9,8 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
-import { db } from "../services/firebase";
 import { getDoc, doc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
@@ -21,9 +21,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   /*----------INITIALIZE STATE----------*/
-  const [currentUserData, setCurrentUserData] = useState();
   const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(true);
+  const [currentUserData, setCurrentUserData] = useState();
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
   function signup(email, password) {
@@ -31,7 +30,18 @@ export function AuthProvider({ children }) {
   }
 
   function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password).then(
+      async (res) => {
+        const docSnap = await getDoc(doc(db, "users", currentUser.uid));
+        if (docSnap.exists()) {
+          setCurrentUserData(docSnap.data());
+          console.log("Document data:", docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+        return docSnap;
+      }
+    );
   }
 
   function logout() {
@@ -51,26 +61,15 @@ export function AuthProvider({ children }) {
   }
 
   /*----------USER CHANGE HANDLER----------*/
-  async function getUserData(user) {
-    if (user) {
-      const docSnap = await getDoc(doc(db, "users", user.uid));
-      return docSnap;
-    }
-    return user;
-  }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
       setCurrentUser(user);
-      getUserData(user).then((docSnap) => {
-        if (docSnap) {
-          setCurrentUserData(docSnap.data());
-        }
-        setLoading(false);
-      });
-    });
-    return unsubscribe;
-  }, []);
+    } else {
+      setCurrentUser(user);
+      setCurrentUserData();
+    }
+  });
 
   /*----------CONTEXT OBJECT----------*/
   const value = {
@@ -84,9 +83,5 @@ export function AuthProvider({ children }) {
     changePassword,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
