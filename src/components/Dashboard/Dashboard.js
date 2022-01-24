@@ -4,6 +4,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 import Status from "./Status/Status";
+import Header from "./Status/Header/Header";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -29,9 +30,7 @@ export default function Dashboard() {
         <div className="w-100">
           <Card>
             <Card.Body>
-              <h2 className="text-center mb-4">
-                Good Morning, {currentUserData.fname}!
-              </h2>
+              <Header />
               {error && <Alert variant="danger">{error}</Alert>}
               <strong>Full Name: </strong> {currentUserData.fname}{" "}
               {currentUserData.lname} <br />
