@@ -55,23 +55,19 @@ export default function Signup() {
     }
 
     try {
-      setError("");
       setLoading(true);
-      const userCred = await signup(
+      setError("");
+      await signup(
         emailRef.current.value,
-        passwordRef.current.value
-      );
-      await setDoc(doc(db, "users", userCred.user.uid), {
-        fname: fnameRef.current.value,
-        lname: lnameRef.current.value,
-        email: emailRef.current.value,
-        role: "Director",
-        team: teamRef.current.value,
-        base: baseRef.current.value,
-      }).then(() => {
+        passwordRef.current.value,
+        fnameRef.current.value,
+        lnameRef.current.value,
+        teamRef.current.value,
+        baseRef.current.value
+      ).then(() => {
         navigate("/");
       });
-    } catch {
+    } catch (err) {
       setError("Failed to create an account");
     }
     setLoading(false);

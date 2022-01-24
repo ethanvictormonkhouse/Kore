@@ -9,7 +9,7 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
-import { getDoc, doc } from "firebase/firestore";
+import { setDoc, getDoc, doc } from "firebase/firestore";
 import { db } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
@@ -25,19 +25,30 @@ export function AuthProvider({ children }) {
   const [currentUserData, setCurrentUserData] = useState();
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
-  function signup(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+  function signup(email, password, fname, lname, team, base) {
+    const userData = {
+      fname: fname,
+      lname: lname,
+      email: email,
+      team: team,
+      base: base,
+    };
+    return createUserWithEmailAndPassword(auth, email, password).then(
+      async (res) => {
+        await setDoc(doc(db, "users", res.user.uid), userData);
+        setCurrentUserData(userData);
+        return currentUserData;
+      }
+    );
   }
 
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password).then(
       async (res) => {
-        const docSnap = await getDoc(doc(db, "users", currentUser.uid));
+        const docSnap = await getDoc(doc(db, "users", res.user.uid));
         if (docSnap.exists()) {
           setCurrentUserData(docSnap.data());
-          console.log("Document data:", docSnap.data());
         } else {
-          console.log("No such document!");
         }
         return docSnap;
       }
