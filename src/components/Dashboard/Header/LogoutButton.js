@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function LogoutButton() {
   const [error, setError] = useState("");
@@ -19,8 +19,8 @@ export default function LogoutButton() {
     }
   }
   return (
-    <div className="w-100 text-center mt-2">
-      <Button variant="primary" onClick={handleLogout}>
+    <div>
+      <Button variant="secondary" onClick={handleLogout}>
         Log Out
       </Button>
     </div>

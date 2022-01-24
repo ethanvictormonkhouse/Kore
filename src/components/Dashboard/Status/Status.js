@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "react-bootstrap";
+import Clock from "../Header/Clock";
 
 export default function Status() {
   return (

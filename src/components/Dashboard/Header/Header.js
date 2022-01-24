@@ -1,6 +1,7 @@
 import React from "react";
 import LogoutButton from "./LogoutButton";
 import UpdateProfile from "./UpdateProfile";
+import Clock from "./Clock";
 
 import { Navbar, Nav, Container, Row, Col } from "react-bootstrap";
 
@@ -27,8 +28,11 @@ export default function Header() {
               <Nav.Link href="#help">Help</Nav.Link>
             </Nav>
           </Container>
-          <Container className="mx-2  justify-content-end">
-            <Row>
+          <Container className="justify-content-end">
+            <Row className="d-flex align-items-center">
+              <Col md="auto">
+                <Clock />
+              </Col>
               <Col md="auto">
                 <UpdateProfile />
               </Col>

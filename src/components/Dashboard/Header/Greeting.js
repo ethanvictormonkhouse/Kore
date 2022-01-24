@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function Greeting() {
   const currentHour = new Date().getHours();

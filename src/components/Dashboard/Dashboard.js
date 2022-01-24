@@ -3,8 +3,8 @@ import { Card, CardGroup, Alert, Container } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 
 import Status from "./Status/Status";
-import Navbar from "./Status/Header/Header";
-import Greeting from "./Status/Header/Greeting";
+import Header from "./Header/Header";
+import Greeting from "./Header/Greeting";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -17,7 +17,7 @@ export default function Dashboard() {
         fluid
       >
         <div className="w-100">
-          <Navbar />
+          <Header />
           <CardGroup>
             <Card>
               <Card.Body>
