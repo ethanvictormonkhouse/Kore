@@ -52,7 +52,7 @@ export default function Signup() {
     e.preventDefault();
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match");
+      return setError("Ah snap! Passwords don't match.");
     }
 
     try {
@@ -69,7 +69,7 @@ export default function Signup() {
         navigate("/");
       });
     } catch (err) {
-      setError("Failed to create an account");
+      setError("Whoops, you already have an account with us.");
     }
     setLoading(false);
   }

@@ -21,7 +21,6 @@ export default function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     try {
       setLoading(true);
       setError("");
@@ -32,8 +31,11 @@ export default function Login() {
       );
     } catch (err) {
       setError("Houston, we have a problem. Check your password.");
+      setLoading(false);
     }
-    setLoading(false);
+    return () => {
+      setLoading(false);
+    };
   }
 
   return (
