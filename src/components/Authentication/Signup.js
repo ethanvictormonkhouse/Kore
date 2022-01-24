@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Container,
+  Spinner,
 } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -192,7 +193,15 @@ export default function Signup() {
                   </FloatingLabel>
                 </Form.Group>
                 <Button disabled={loading} className="w-100 mt-4" type="submit">
-                  Sign Up
+                  Sign Up &nbsp;
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    hidden={!loading}
+                  />
                 </Button>
               </Form>
             </Card.Body>

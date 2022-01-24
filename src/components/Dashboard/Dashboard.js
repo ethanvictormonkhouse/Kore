@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Card, Alert, Container } from "react-bootstrap";
+import { Card, CardGroup, Alert, Container } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
 
 import Status from "./Status/Status";
-import Header from "./Status/Header/Header";
+import Navbar from "./Status/Header/Header";
+import Greeting from "./Status/Header/Greeting";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -17,25 +17,28 @@ export default function Dashboard() {
         fluid
       >
         <div className="w-100">
-          <Card>
-            <Card.Body>
-              <Header />
-              {error && <Alert variant="danger">{error}</Alert>}
-              <strong>Full Name: </strong> {currentUserData.fname}{" "}
-              {currentUserData.lname} <br />
-              <strong>Work Email: </strong> {currentUser.email}
-              <br />
-              <strong>Current Team: </strong> {currentUserData.team}
-              <br />
-              <strong>Current Base: </strong> {currentUserData.base}
-              <br />
-              <br />
-              <Status />
-              <Link to="/update-profile" className="btn btn-dark w-100 mt-3">
-                Update Profile
-              </Link>
-            </Card.Body>
-          </Card>
+          <Navbar />
+          <CardGroup>
+            <Card>
+              <Card.Body>
+                {error && <Alert variant="danger">{error}</Alert>}
+                <Greeting />
+                <strong>Full Name: </strong> {currentUserData.fname}{" "}
+                {currentUserData.lname} <br />
+                <strong>Work Email: </strong> {currentUser.email}
+                <br />
+                <strong>Current Team: </strong> {currentUserData.team}
+                <br />
+                <strong>Current Base: </strong> {currentUserData.base}
+                <br />
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <Status />
+              </Card.Body>
+            </Card>
+          </CardGroup>
         </div>
       </Container>
     </>

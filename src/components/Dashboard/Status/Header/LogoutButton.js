@@ -20,7 +20,7 @@ export default function LogoutButton() {
   }
   return (
     <div className="w-100 text-center mt-2">
-      <Button variant="dark" onClick={handleLogout}>
+      <Button variant="primary" onClick={handleLogout}>
         Log Out
       </Button>
     </div>

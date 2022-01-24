@@ -6,6 +6,7 @@ import {
   Alert,
   FloatingLabel,
   Container,
+  Spinner,
 } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -30,7 +31,7 @@ export default function Login() {
         }
       );
     } catch (err) {
-      setError("Failed to log in");
+      setError("Houston, we have a problem. Check your password.");
     }
     setLoading(false);
   }
@@ -74,7 +75,15 @@ export default function Login() {
                   </FloatingLabel>
                 </Form.Group>
                 <Button disabled={loading} className="w-100 mt-3" type="submit">
-                  Log In
+                  Log In &nbsp;
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    hidden={!loading}
+                  />
                 </Button>
               </Form>
               <div className="w-100 text-center mt-3">
