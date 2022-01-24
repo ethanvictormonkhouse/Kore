@@ -44,6 +44,7 @@ export function AuthProvider({ children }) {
       async (res) => {
         await setDoc(doc(db, "users", res.user.uid), userData);
         setCurrentUserData(userData);
+        setLoading(false);
         return currentUserData;
       }
     );
@@ -55,8 +56,8 @@ export function AuthProvider({ children }) {
         const docSnap = await getDoc(doc(db, "users", res.user.uid));
         if (docSnap.exists()) {
           setCurrentUserData(docSnap.data());
-        } else {
         }
+        setLoading(false);
         return docSnap;
       }
     );
@@ -78,7 +79,7 @@ export function AuthProvider({ children }) {
     return updatePassword(auth.currentUser, password);
   }
 
-  /*----------USER CHANGE HANDLER----------*/
+  /*----------AUTH STATE LISTENER----------*/
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
