@@ -24,9 +24,9 @@ export default function Greeting() {
   return (
     <>
       <div>
-        <h2 className="text-center mb-4">
+        <h4 className="text-center mb-4">
           {greeting} {currentUserData.fname}!
-        </h2>
+        </h4>
       </div>
     </>
   );

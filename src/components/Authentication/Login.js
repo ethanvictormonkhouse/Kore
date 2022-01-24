@@ -44,6 +44,13 @@ export default function Login() {
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Card>
             <Card.Body>
+              <div>
+                <img
+                  src="/logo512d.png"
+                  className="img-fluid d-block mx-auto my-3 w-25"
+                  alt="logo"
+                />
+              </div>
               <h2 className="text-center mb-2">Log In</h2>
               <p className="text-center mb-4">Welcome to Kore</p>
               {error && <Alert variant="danger">{error}</Alert>}

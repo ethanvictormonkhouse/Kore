@@ -82,6 +82,13 @@ export default function Signup() {
         <div className="w-100" style={{ maxWidth: "400px" }}>
           <Card>
             <Card.Body>
+              <div>
+                <img
+                  src="/logo512d.png"
+                  className="img-fluid d-block mx-auto my-3 w-25"
+                  alt="logo"
+                />
+              </div>
               <h2 className="text-center mb-4">Sign Up</h2>
               {error && <Alert variant="danger">{error}</Alert>}
               <Form onSubmit={handleSubmit}>

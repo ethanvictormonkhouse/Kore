@@ -1,25 +1,14 @@
 import React, { useState } from "react";
-import { Card, Button, Alert, Container } from "react-bootstrap";
+import { Card, Alert, Container } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import Status from "./Status/Status";
 import Header from "./Status/Header/Header";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
-  const { currentUser, currentUserData, logout } = useAuth();
-  const navigate = useNavigate();
-
-  async function handleLogout() {
-    setError("");
-    try {
-      await logout();
-      navigate("/login");
-    } catch {
-      setError("Failed to log out");
-    }
-  }
+  const { currentUser, currentUserData } = useAuth();
 
   return (
     <>
@@ -42,16 +31,11 @@ export default function Dashboard() {
               <br />
               <br />
               <Status />
-              <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
+              <Link to="/update-profile" className="btn btn-dark w-100 mt-3">
                 Update Profile
               </Link>
             </Card.Body>
           </Card>
-          <div className="w-100 text-center mt-2">
-            <Button variant="link" onClick={handleLogout}>
-              Log Out
-            </Button>
-          </div>
         </div>
       </Container>
     </>
