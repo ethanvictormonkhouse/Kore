@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useState } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -21,8 +21,15 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   /*----------INITIALIZE STATE----------*/
+  const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState();
-  const [currentUserData, setCurrentUserData] = useState();
+  const [currentUserData, setCurrentUserData] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    team: "",
+    base: "",
+  });
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
   function signup(email, password, fname, lname, team, base) {
@@ -73,14 +80,20 @@ export function AuthProvider({ children }) {
 
   /*----------USER CHANGE HANDLER----------*/
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
+  useEffect(() => {
+    onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
-    } else {
-      setCurrentUser(user);
-      setCurrentUserData();
-    }
-  });
+      if (user) {
+        const docSnap = await getDoc(doc(db, "users", user.uid));
+        if (docSnap.exists()) {
+          setCurrentUserData(docSnap.data());
+        }
+        setLoading(false);
+        return docSnap;
+      }
+      setLoading(false);
+    });
+  }, []);
 
   /*----------CONTEXT OBJECT----------*/
   const value = {
@@ -94,5 +107,9 @@ export function AuthProvider({ children }) {
     changePassword,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }

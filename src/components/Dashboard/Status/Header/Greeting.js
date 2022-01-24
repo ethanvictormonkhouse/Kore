@@ -9,7 +9,7 @@ export default function Greeting() {
 
   useEffect(() => {
     switch (true) {
-      case currentHour < 9:
+      case currentHour < 12:
         setGreeting("Good Morning, ");
         break;
       case currentHour < 18:
