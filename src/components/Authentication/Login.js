@@ -30,7 +30,7 @@ export default function Login() {
         }
       );
     } catch (err) {
-      setError("Houston, we have a problem. Check your password.");
+      setError("Houston, we have a problem. Check your email/password.");
       setLoading(false);
     }
     return () => {
