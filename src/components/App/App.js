@@ -1,6 +1,5 @@
 //import module dependencies
 import React, { Fragment } from "react";
-import { Container } from "react-bootstrap";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 //import custom dependencies
@@ -13,6 +12,13 @@ import Login from "../Authentication/Login";
 import ForgotPassword from "../Authentication/ForgotPassword";
 import Dashboard from "../Dashboard/Dashboard";
 import UpdateProfile from "../Profile/UpdateProfile";
+
+//import icons
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+
+library.add(fas);
 
 function App() {
   return (

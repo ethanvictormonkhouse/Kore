@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function LogoutButton() {
   const [error, setError] = useState("");
@@ -21,7 +22,7 @@ export default function LogoutButton() {
   return (
     <div>
       <Button variant="secondary" onClick={handleLogout}>
-        Log Out
+        <FontAwesomeIcon icon="fa-solid fa-arrow-right-from-bracket" /> Log Out
       </Button>
     </div>
   );
