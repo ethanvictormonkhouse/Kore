@@ -1,25 +1,9 @@
 import React, { useState } from "react";
-import {
-  Card,
-  Container,
-  Col,
-  Row,
-  Button,
-  ButtonGroup,
-  ToggleButton,
-} from "react-bootstrap";
+import { Card, Container, ButtonGroup, ToggleButton } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Status() {
   const [radioValue, setRadioValue] = useState("1");
-
-  const radios = [
-    { name: "Available", value: "1" },
-    { name: "Busy", value: "2" },
-    { name: "In A Call", value: "3" },
-    { name: "On A Break", value: "4" },
-    { name: "Away", value: "5" },
-  ];
 
   return (
     <div>
@@ -69,7 +53,7 @@ export default function Status() {
             <ToggleButton
               id="break"
               type="radio"
-              variant="outline-danger"
+              variant="outline-success"
               name="break"
               value="4"
               checked={radioValue === "4"}
