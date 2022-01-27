@@ -10,7 +10,7 @@ import Toasts from "./Toasts/Toasts";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
-  const { currentUser, currentUserData } = useAuth();
+  const { currentUser, currentUserData, teamData, baseData } = useAuth();
 
   return (
     <>
@@ -29,9 +29,15 @@ export default function Dashboard() {
                 {currentUserData.lname} <br />
                 <strong>Work Email: </strong> {currentUser.email}
                 <br />
-                <strong>Current Team: </strong> {currentUserData.team}
+                <strong>Current Team: </strong> {teamData.name} [
+                <strong>{teamData.status}</strong>]
                 <br />
-                <strong>Current Base: </strong> {currentUserData.base}
+                <strong>Current Base: </strong> {baseData.name},{" "}
+                {baseData.country}
+                <br />
+                <strong>Operating Region: </strong> {baseData.region}
+                <br />
+                <strong>Base Dialling Code: </strong> +{baseData.code}
                 <br />
               </Card.Body>
             </Card>

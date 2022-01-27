@@ -23,16 +23,24 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   /*----------INITIALIZE STATE----------*/
   const [loading, setLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState();
+  const [teamData, setTeamData] = useState({ name: "...", status: "..." });
+  const [baseData, setBaseData] = useState({
+    code: "...",
+    country: "...",
+    name: "...",
+    region: "...",
+    tz: "...",
+  });
+  const [currentUser, setCurrentUser] = useState("");
   const [currentUserStatus, setCurrentUserStatus] = useState({
-    status: "Away",
+    status: "...",
   });
   const [currentUserData, setCurrentUserData] = useState({
-    fname: "",
-    lname: "",
-    email: "",
-    team: "",
-    base: "",
+    fname: "...",
+    lname: "...",
+    email: "...",
+    team: "...",
+    base: "...",
   });
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
@@ -107,14 +115,22 @@ export function AuthProvider({ children }) {
       setCurrentUser(user); //set currentUser if authentication state changes
       if (user) {
         onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
-        const docSnap = await getDoc(doc(db, "users", user.uid));
-        if (docSnap.exists()) {
+        const userDocData = await getDoc(doc(db, "users", user.uid));
+        const teamDocData = await getDoc(
+          doc(db, "teams", userDocData.data().team)
+        );
+        const baseDocData = await getDoc(
+          doc(db, "bases", userDocData.data().base)
+        );
+        if (userDocData.exists()) {
           //set userData and userStatus if a profile is found in Firestore
           updateStatus(user.uid, "Available", "");
-          setCurrentUserData(docSnap.data());
+          setCurrentUserData(userDocData.data());
+          setTeamData(teamDocData.data());
+          setBaseData(baseDocData.data());
         }
         setLoading(false);
-        return docSnap;
+        return userDocData;
       }
       setLoading(false);
     });
@@ -126,6 +142,8 @@ export function AuthProvider({ children }) {
     currentUser,
     currentUserStatus,
     currentUserData,
+    teamData,
+    baseData,
     login,
     signup,
     logout,

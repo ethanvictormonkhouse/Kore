@@ -12,7 +12,7 @@ import {
 } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { onSnapshot, collection, setDoc, doc } from "firebase/firestore";
+import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../../services/firebase";
 
 export default function Signup() {
@@ -29,8 +29,8 @@ export default function Signup() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [teams, setTeams] = useState([{ name: "Loading...", id: "initial" }]);
-  const [bases, setBases] = useState([{ name: "Loading...", id: "initial" }]);
+  const [teams, setTeams] = useState([{ name: "...", id: "initial" }]);
+  const [bases, setBases] = useState([{ name: "...", id: "initial" }]);
 
   useEffect(
     () =>
