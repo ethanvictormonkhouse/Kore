@@ -5,6 +5,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import Status from "./Status/Status";
 import Header from "./Header/Header";
 import Greeting from "./Header/Greeting";
+import Toasts from "./Toasts/Toasts";
 
 export default function Dashboard() {
   const [error, setError] = useState("");
@@ -34,11 +35,10 @@ export default function Dashboard() {
               </Card.Body>
             </Card>
             <Card>
-              <Card.Body>
-                <Status />
-              </Card.Body>
+              <Status />
             </Card>
           </CardGroup>
+          <Toasts />
         </div>
       </Container>
     </>

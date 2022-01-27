@@ -1,9 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, Container, ButtonGroup, ToggleButton } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAuth } from "../../../contexts/AuthContext";
 
 export default function Status() {
-  const [radioValue, setRadioValue] = useState("1");
+  const { currentUser, currentUserStatus, updateStatus } = useAuth();
+
+  const statuses = [
+    {
+      name: "Available",
+      variant: "outline-success",
+      icon: "fa-solid fa-circle-check",
+    },
+    {
+      name: "Busy",
+      variant: "outline-danger",
+      icon: "fa-solid fa-circle-xmark",
+    },
+    { name: "In A Call", variant: "outline-danger", icon: "fa-solid fa-phone" },
+    {
+      name: "On A Break",
+      variant: "outline-success",
+      icon: "fa-solid fa-mug-saucer",
+    },
+    { name: "Away", variant: "outline-dark", icon: "fa-solid fa-moon" },
+  ];
 
   return (
     <div>
@@ -17,61 +38,21 @@ export default function Status() {
         </Card.Body>
         <Container className="d-flex justify-content-center mb-3">
           <ButtonGroup>
-            <ToggleButton
-              id="available"
-              type="radio"
-              variant="outline-success"
-              name="available"
-              value="1"
-              checked={radioValue === "1"}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-circle-check" /> Available
-            </ToggleButton>
-            <ToggleButton
-              id="busy"
-              type="radio"
-              variant="outline-danger"
-              name="available"
-              value="2"
-              checked={radioValue === "2"}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-circle-xmark" /> Busy
-            </ToggleButton>
-            <ToggleButton
-              id="call"
-              type="radio"
-              variant="outline-danger"
-              name="call"
-              value="3"
-              checked={radioValue === "3"}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-phone" /> In A Call
-            </ToggleButton>
-            <ToggleButton
-              id="break"
-              type="radio"
-              variant="outline-success"
-              name="break"
-              value="4"
-              checked={radioValue === "4"}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-mug-saucer" /> On A Break
-            </ToggleButton>
-            <ToggleButton
-              id="away"
-              type="radio"
-              variant="outline-dark"
-              name="away"
-              value="5"
-              checked={radioValue === "5"}
-              onChange={(e) => setRadioValue(e.currentTarget.value)}
-            >
-              <FontAwesomeIcon icon="fa-solid fa-moon" /> Away
-            </ToggleButton>
+            {statuses.map((status) => (
+              <ToggleButton
+                key={status.name}
+                id={`status-${status.name}`}
+                type="radio"
+                variant={status.variant}
+                value={status.name}
+                checked={currentUserStatus.status === status.name}
+                onChange={(e) =>
+                  updateStatus(currentUser.uid, e.target.value, "")
+                }
+              >
+                <FontAwesomeIcon icon={status.icon} /> {status.name}
+              </ToggleButton>
+            ))}
           </ButtonGroup>
         </Container>
       </Card>

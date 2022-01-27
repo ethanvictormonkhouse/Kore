@@ -30,6 +30,7 @@ export default function Login() {
         }
       );
     } catch (err) {
+      console.log(err.message)
       setError("Houston, we have a problem. Check your email/password.");
       setLoading(false);
     }

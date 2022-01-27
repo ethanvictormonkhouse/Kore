@@ -10,7 +10,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../services/firebase";
 import { setDoc, getDoc, doc } from "firebase/firestore";
-import { db } from "../services/firebase";
+import { onDisconnect, ref, set, remove } from "firebase/database";
+import { db, rtdb } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
@@ -23,6 +24,9 @@ export function AuthProvider({ children }) {
   /*----------INITIALIZE STATE----------*/
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState();
+  const [currentUserStatus, setCurrentUserStatus] = useState({
+    status: "Away",
+  });
   const [currentUserData, setCurrentUserData] = useState({
     fname: "",
     lname: "",
@@ -32,6 +36,7 @@ export function AuthProvider({ children }) {
   });
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
+  //function allowing the user to signup
   function signup(email, password, fname, lname, team, base) {
     const userData = {
       fname: fname,
@@ -50,6 +55,7 @@ export function AuthProvider({ children }) {
     );
   }
 
+  //function allowing the user to login
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password).then(
       async (res) => {
@@ -63,30 +69,48 @@ export function AuthProvider({ children }) {
     );
   }
 
+  //function allowing the user to logout
   function logout() {
+    remove(ref(rtdb, "users/" + currentUser.uid)); //if logout, remove userStatus from Firebase
     return signOut(auth);
   }
-
+  //function allowing the user to change their email
+  function changeEmail(email) {
+    return updateEmail(auth.currentUser, email);
+  }
+  //function allowing the user to change their password
+  function changePassword(password) {
+    return updatePassword(auth.currentUser, password);
+  }
+  //function allowing the user to reset their password
   function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
 
-  function changeEmail(email) {
-    return updateEmail(auth.currentUser, email);
-  }
+  /*----------REALTIME DATABASE FUNCTIONS----------*/
 
-  function changePassword(password) {
-    return updatePassword(auth.currentUser, password);
+  //function to update the user's status on Firebase
+  function updateStatus(user, newStatus, newDesc) {
+    const date = new Date().toUTCString();
+    const status = {
+      status: newStatus,
+      desc: newDesc,
+      updated: date,
+    };
+    set(ref(rtdb, "users/" + user), status);
+    setCurrentUserStatus(status);
   }
 
   /*----------AUTH STATE LISTENER----------*/
-
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
+      setCurrentUser(user); //set currentUser if authentication state changes
       if (user) {
+        onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
         const docSnap = await getDoc(doc(db, "users", user.uid));
         if (docSnap.exists()) {
+          //set userData and userStatus if a profile is found in Firestore
+          updateStatus(user.uid, "Available", "");
           setCurrentUserData(docSnap.data());
         }
         setLoading(false);
@@ -94,11 +118,13 @@ export function AuthProvider({ children }) {
       }
       setLoading(false);
     });
-  }, []);
+  }, []); //only run once
 
   /*----------CONTEXT OBJECT----------*/
   const value = {
+    //object of variables and functions to export to the rest of the application
     currentUser,
+    currentUserStatus,
     currentUserData,
     login,
     signup,
@@ -106,9 +132,11 @@ export function AuthProvider({ children }) {
     resetPassword,
     changeEmail,
     changePassword,
+    updateStatus,
   };
 
   return (
+    //if not loading, export
     <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>
