@@ -20,7 +20,6 @@ import {
 } from "firebase/firestore";
 import { onDisconnect, ref, set, remove, get, child } from "firebase/database";
 import { db, rtdb } from "../services/firebase";
-import { NavItem } from "react-bootstrap";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
@@ -33,6 +32,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [teamData, setTeamData] = useState({ name: "...", status: "..." });
   const [teamMembers, setTeamMembers] = useState([]);
+  const [userPresence, setUserPresence] = useState({});
   const [baseData, setBaseData] = useState({
     code: "...",
     country: "...",
@@ -117,22 +117,6 @@ export function AuthProvider({ children }) {
     set(ref(rtdb, "users/" + user), status);
     setCurrentUserStatus(status);
   }
-  // function gt() {
-  //   teamMembers.forEach((doc) => {
-  //     get(ref(rtdb, "users/" + doc.id))
-  //       .then((snapshot) => {
-  //         if (snapshot.exists()) {
-  //           console.log(baseData.uid);
-  //         } else {
-  //           console.log("err");
-  //           return "Offline";
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   });
-  // }
 
   /*----------AUTH STATE LISTENER----------*/
   useEffect(() => {

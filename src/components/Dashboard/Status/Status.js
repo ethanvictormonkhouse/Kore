@@ -6,9 +6,13 @@ import {
   ToggleButton,
   Button,
   CardGroup,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../contexts/AuthContext";
+import { onDisconnect, ref, set, remove, get, child } from "firebase/database";
+import { db, rtdb } from "../../../services/firebase";
 
 export default function Status() {
   const {
@@ -19,25 +23,9 @@ export default function Status() {
     teamMembers,
   } = useAuth();
 
-  // function teamMemberStatus() {
-  //   getStatus("Lxc9HpV3c4fYeb1cvaguNmgGlSg1").then((res) => {
-  //     return res;
-  //   });
-  // }
-
-  // function getStatus(user) {
-  //   return get(ref(rtdb, "users/" + user))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         return snapshot.val().status;
-  //       } else {
-  //         return "Offline";
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // }
+  async function sortTeam() {
+    teamMembers.forEach((member) => {});
+  }
 
   const statuses = [
     {
@@ -61,7 +49,7 @@ export default function Status() {
 
   return (
     <div>
-      <Card>
+      <Card className="m-2">
         <Card.Body>
           <h2 className="text-center mb-4">Your Status</h2>
           <p className="text-center mb-2">
@@ -88,28 +76,24 @@ export default function Status() {
             ))}
           </ButtonGroup>
         </Container>
-        <Card className="m-2">
-          <h3 className="text-center mt-4">{teamData.name} Team</h3>
+        <Container>
           <Card.Body>
-            <CardGroup>
+            <Row xs={1} md={1} lg={2} className="g-2">
               {teamMembers.map((member) => (
-                <Card
-                  key={`member-${member.id}`}
-                  className="m-2"
-                  style={{ width: "15rem" }}
-                >
-                  <Card.Body>
-                    <Card.Title>
-                      {member.data().fname} {member.data().lname}
-                    </Card.Title>
-                    <Card.Text></Card.Text>
-                    <Button variant="primary">View Profile</Button>
-                  </Card.Body>
-                </Card>
+                <Col>
+                  <Card key={`member-${member.id}`} className="m-2">
+                    <Card.Body>
+                      <Card.Title className="text-center">
+                        {member.data().fname} {member.data().lname}
+                      </Card.Title>
+                      <Card.Text className="text-center">Online</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
               ))}
-            </CardGroup>
+            </Row>
           </Card.Body>
-        </Card>
+        </Container>
       </Card>
     </div>
   );
