@@ -1,10 +1,43 @@
 import React from "react";
-import { Card, Container, ButtonGroup, ToggleButton } from "react-bootstrap";
+import {
+  Card,
+  Container,
+  ButtonGroup,
+  ToggleButton,
+  Button,
+  CardGroup,
+} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../contexts/AuthContext";
 
 export default function Status() {
-  const { currentUser, currentUserStatus, updateStatus } = useAuth();
+  const {
+    currentUser,
+    currentUserStatus,
+    teamData,
+    updateStatus,
+    teamMembers,
+  } = useAuth();
+
+  // function teamMemberStatus() {
+  //   getStatus("Lxc9HpV3c4fYeb1cvaguNmgGlSg1").then((res) => {
+  //     return res;
+  //   });
+  // }
+
+  // function getStatus(user) {
+  //   return get(ref(rtdb, "users/" + user))
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         return snapshot.val().status;
+  //       } else {
+  //         return "Offline";
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }
 
   const statuses = [
     {
@@ -55,6 +88,28 @@ export default function Status() {
             ))}
           </ButtonGroup>
         </Container>
+        <Card className="m-2">
+          <h3 className="text-center mt-4">{teamData.name} Team</h3>
+          <Card.Body>
+            <CardGroup>
+              {teamMembers.map((member) => (
+                <Card
+                  key={`member-${member.id}`}
+                  className="m-2"
+                  style={{ width: "15rem" }}
+                >
+                  <Card.Body>
+                    <Card.Title>
+                      {member.data().fname} {member.data().lname}
+                    </Card.Title>
+                    <Card.Text></Card.Text>
+                    <Button variant="primary">View Profile</Button>
+                  </Card.Body>
+                </Card>
+              ))}
+            </CardGroup>
+          </Card.Body>
+        </Card>
       </Card>
     </div>
   );

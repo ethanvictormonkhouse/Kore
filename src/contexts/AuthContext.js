@@ -9,21 +9,30 @@ import {
   updatePassword,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
-import { setDoc, getDoc, doc } from "firebase/firestore";
-import { onDisconnect, ref, set, remove } from "firebase/database";
+import {
+  setDoc,
+  getDoc,
+  doc,
+  query,
+  collection,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { onDisconnect, ref, set, remove, get, child } from "firebase/database";
 import { db, rtdb } from "../services/firebase";
+import { NavItem } from "react-bootstrap";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
 export function useAuth() {
   return useContext(AuthContext);
 }
-/*----------INITIALIZE CONTEXT----------*/
 
 export function AuthProvider({ children }) {
   /*----------INITIALIZE STATE----------*/
   const [loading, setLoading] = useState(true);
   const [teamData, setTeamData] = useState({ name: "...", status: "..." });
+  const [teamMembers, setTeamMembers] = useState([]);
   const [baseData, setBaseData] = useState({
     code: "...",
     country: "...",
@@ -99,7 +108,7 @@ export function AuthProvider({ children }) {
 
   //function to update the user's status on Firebase
   function updateStatus(user, newStatus, newDesc) {
-    const date = new Date().toUTCString();
+    const date = Date.now();
     const status = {
       status: newStatus,
       desc: newDesc,
@@ -108,6 +117,22 @@ export function AuthProvider({ children }) {
     set(ref(rtdb, "users/" + user), status);
     setCurrentUserStatus(status);
   }
+  // function gt() {
+  //   teamMembers.forEach((doc) => {
+  //     get(ref(rtdb, "users/" + doc.id))
+  //       .then((snapshot) => {
+  //         if (snapshot.exists()) {
+  //           console.log(baseData.uid);
+  //         } else {
+  //           console.log("err");
+  //           return "Offline";
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   });
+  // }
 
   /*----------AUTH STATE LISTENER----------*/
   useEffect(() => {
@@ -116,18 +141,25 @@ export function AuthProvider({ children }) {
       if (user) {
         onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
         const userDocData = await getDoc(doc(db, "users", user.uid));
-        const teamDocData = await getDoc(
-          doc(db, "teams", userDocData.data().team)
-        );
         const baseDocData = await getDoc(
           doc(db, "bases", userDocData.data().base)
         );
+        const teamDocData = await getDoc(
+          doc(db, "teams", userDocData.data().team)
+        );
+        const q = query(
+          collection(db, "users"),
+          where("team", "==", userDocData.data().team)
+        );
+        const teamMembersDocs = await getDocs(q);
+
         if (userDocData.exists()) {
           //set userData and userStatus if a profile is found in Firestore
           updateStatus(user.uid, "Available", "");
           setCurrentUserData(userDocData.data());
           setTeamData(teamDocData.data());
           setBaseData(baseDocData.data());
+          setTeamMembers(teamMembersDocs.docs);
         }
         setLoading(false);
         return userDocData;
@@ -144,6 +176,7 @@ export function AuthProvider({ children }) {
     currentUserData,
     teamData,
     baseData,
+    teamMembers,
     login,
     signup,
     logout,
