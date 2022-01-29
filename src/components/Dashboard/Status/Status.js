@@ -4,28 +4,16 @@ import {
   Container,
   ButtonGroup,
   ToggleButton,
-  Button,
-  CardGroup,
   Row,
   Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../contexts/AuthContext";
-import { onDisconnect, ref, set, remove, get, child } from "firebase/database";
-import { db, rtdb } from "../../../services/firebase";
+import StatusText from "./StatusText";
 
 export default function Status() {
-  const {
-    currentUser,
-    currentUserStatus,
-    teamData,
-    updateStatus,
-    teamMembers,
-  } = useAuth();
-
-  async function sortTeam() {
-    teamMembers.forEach((member) => {});
-  }
+  const { currentUser, currentUserStatus, updateStatus, teamMembers } =
+    useAuth();
 
   const statuses = [
     {
@@ -52,10 +40,8 @@ export default function Status() {
       <Card className="m-2">
         <Card.Body>
           <h2 className="text-center mb-4">Your Status</h2>
-          <p className="text-center mb-2">
-            You've been working on <strong>'Front-End'</strong> for{" "}
-            <strong>87 minutes</strong>. Maybe take a break?{" "}
-          </p>
+
+          <StatusText />
         </Card.Body>
         <Container className="d-flex justify-content-center mb-3">
           <ButtonGroup>
@@ -80,8 +66,8 @@ export default function Status() {
           <Card.Body>
             <Row xs={1} md={1} lg={2} className="g-2">
               {teamMembers.map((member) => (
-                <Col>
-                  <Card key={`member-${member.id}`} className="m-2">
+                <Col key={`member-${member.id}`}>
+                  <Card className="m-2">
                     <Card.Body>
                       <Card.Title className="text-center">
                         {member.data().fname} {member.data().lname}

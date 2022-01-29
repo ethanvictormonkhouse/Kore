@@ -29,7 +29,7 @@ export default function Header() {
             </Nav>
           </Container>
           <Container className="justify-content-end">
-            <Row className="d-flex align-items-center">
+            <Row xs={1} md={1} className="g-4">
               <Col md="auto">
                 <Clock />
               </Col>

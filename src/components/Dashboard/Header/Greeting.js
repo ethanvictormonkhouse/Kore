@@ -24,9 +24,7 @@ export default function Greeting() {
   return (
     <>
       <div>
-        <h4 className="justify-content-start mb-3">
-          {greeting} {currentUserData.fname}!
-        </h4>
+        {greeting} {currentUserData.fname}!
       </div>
     </>
   );
