@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function UpdateProfile() {
   return (
     <div className="w-100 text-center">
-      <Link to="/update-profile" className="btn btn-primary">
+      <Link to="/update-profile" className="btn btn-outline">
         <FontAwesomeIcon icon="fa-solid fa-id-card" /> Update Profile
       </Link>
     </div>

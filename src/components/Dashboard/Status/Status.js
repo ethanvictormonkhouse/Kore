@@ -9,11 +9,17 @@ import {
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../contexts/AuthContext";
+
 import StatusText from "./StatusText";
 
 export default function Status() {
-  const { currentUser, currentUserStatus, updateStatus, teamMembers } =
-    useAuth();
+  const {
+    currentUser,
+    currentUserStatus,
+    updateStatus,
+    teamMembers,
+    userPresence,
+  } = useAuth();
 
   const statuses = [
     {
@@ -34,6 +40,11 @@ export default function Status() {
     },
     { name: "Away", variant: "outline-dark", icon: "fa-solid fa-moon" },
   ];
+
+  function findUserStatus(user) {
+    if (userPresence && userPresence[user]) return userPresence[user].status;
+    else return "Offline";
+  }
 
   return (
     <div>
@@ -67,12 +78,14 @@ export default function Status() {
             <Row xs={1} md={1} lg={2} className="g-2">
               {teamMembers.map((member) => (
                 <Col key={`member-${member.id}`}>
-                  <Card className="m-2">
+                  <Card bg="danger" text="light" className="m-2">
                     <Card.Body>
                       <Card.Title className="text-center">
                         {member.data().fname} {member.data().lname}
                       </Card.Title>
-                      <Card.Text className="text-center">Online</Card.Text>
+                      <Card.Text className="text-center">
+                        {findUserStatus(member.id)}
+                      </Card.Text>
                     </Card.Body>
                   </Card>
                 </Col>

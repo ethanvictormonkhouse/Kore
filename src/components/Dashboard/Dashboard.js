@@ -24,16 +24,16 @@ export default function Dashboard() {
     <>
       <div className="w-100">
         <Header />
-        <Row xs={1} md={1} lg={2} className="g-4">
+        <Row xs={1} md={1} lg={2} className="g-1">
           <Col>
             <Card className="m-2">
               <Card.Body>
-                <h4 className="justify-content-start mb-3">
+                <h2 className="text-center mb-4">
                   <Greeting />
-                </h4>
+                </h2>
                 <Row xs={1} md={1} lg={2} className="g-2">
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -47,7 +47,7 @@ export default function Dashboard() {
                     </Card>
                   </Col>
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -60,7 +60,7 @@ export default function Dashboard() {
                     </Card>
                   </Col>
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -74,7 +74,7 @@ export default function Dashboard() {
                     </Card>
                   </Col>
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -88,7 +88,7 @@ export default function Dashboard() {
                     </Card>
                   </Col>
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -101,7 +101,7 @@ export default function Dashboard() {
                     </Card>
                   </Col>
                   <Col>
-                    <Card>
+                    <Card bg="secondary" text="primary">
                       <Card.Body>
                         <FontAwesomeIcon
                           className="mb-2"
@@ -123,29 +123,29 @@ export default function Dashboard() {
             />
           </Col>
           <Col>
-            <Card className="m-2">
+            <Card bg="primary" text="light" className="m-2">
               <Card.Body>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <h2 className="text-center mb-4">Your Active Tasks</h2>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-pencil" /> Draft
                     presentation for Operating Management team
                   </Card.Body>
                 </Card>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-pencil" /> Send invoice
                     to Typed for January 2022 services
                   </Card.Body>
                 </Card>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-pencil" /> Schedule
                     meeting with Sarah regarding the building-tier rating system
                   </Card.Body>
                 </Card>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-pencil" /> Complete
                     onDisconnect functionality for Project Sierra
@@ -156,25 +156,25 @@ export default function Dashboard() {
             </Card>
           </Col>
           <Col>
-            <Card className="m-2">
+            <Card bg="primary" text="light" className="m-2">
               <Card.Body>
                 {error && <Alert variant="danger">{error}</Alert>}
                 <h2 className="text-center mb-4">Your Appraisals</h2>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-gift" /> Mary{" "}
                     <strong>gave you a reward!</strong>{" "}
                     <i>"Great presentation. Loved the 18-month forecast."</i>
                   </Card.Body>
                 </Card>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-gift" /> Zack{" "}
                     <strong>gave you a reward!</strong>{" "}
                     <i>"Firestore briefing doc was so helpful! Thanks"</i>
                   </Card.Body>
                 </Card>
-                <Card className="mb-2">
+                <Card bg="primary" text="light" className="mb-2">
                   <Card.Body>
                     <FontAwesomeIcon icon="fa-solid fa-circle-exclamation" />{" "}
                     Sarah <strong>has a suggestion!</strong>{" "}

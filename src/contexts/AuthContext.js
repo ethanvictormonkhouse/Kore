@@ -18,7 +18,7 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { onDisconnect, ref, set, remove, get, child } from "firebase/database";
+import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { db, rtdb } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
@@ -32,7 +32,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [teamData, setTeamData] = useState({ name: "...", status: "..." });
   const [teamMembers, setTeamMembers] = useState([]);
-  const [userPresence, setUserPresence] = useState({});
+  const [userPresence, setUserPresence] = useState({
+    status: "...",
+    updated: "...",
+  });
+
   const [baseData, setBaseData] = useState({
     code: "...",
     country: "...",
@@ -118,12 +122,45 @@ export function AuthProvider({ children }) {
     setCurrentUserStatus(status);
   }
 
+  // function onlineMembers(teamMembers) {
+  //   var memberStatus = [];
+  //   teamMembers.forEach((member) => {
+  //     get(child(ref(rtdb), `users/${member.id}`))
+  //       .then((snapshot) => {
+  //         if (snapshot.exists()) {
+  //           memberStatus.push({
+  //             uid: snapshot.key,
+  //             status: snapshot.val().status,
+  //           });
+  //         } else {
+  //           memberStatus.push({
+  //             uid: snapshot.key,
+  //             status: "Offline",
+  //           });
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   });
+  //   setUsersStatus(memberStatus);
+  // }
+
+  function userPresenceListener() {
+    const usersRef = ref(rtdb, "users/");
+    onValue(usersRef, (snapshot) => {
+      const data = snapshot.val();
+      setUserPresence(data);
+    });
+  }
+
   /*----------AUTH STATE LISTENER----------*/
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user); //set currentUser if authentication state changes
       if (user) {
         onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
+        userPresenceListener();
         const userDocData = await getDoc(doc(db, "users", user.uid));
         const baseDocData = await getDoc(
           doc(db, "bases", userDocData.data().base)
@@ -136,6 +173,7 @@ export function AuthProvider({ children }) {
           where("team", "==", userDocData.data().team)
         );
         const teamMembersDocs = await getDocs(q);
+        // onlineMembers(teamMembersDocs.docs);
 
         if (userDocData.exists()) {
           //set userData and userStatus if a profile is found in Firestore
@@ -161,6 +199,7 @@ export function AuthProvider({ children }) {
     teamData,
     baseData,
     teamMembers,
+    userPresence,
     login,
     signup,
     logout,

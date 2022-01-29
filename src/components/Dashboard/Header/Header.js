@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <div>
       <>
-        <Navbar bg="light" variant="light">
+        <Navbar bg="secondary" variant="light">
           <Container>
             <Navbar.Brand href="#home">
               <img
@@ -20,19 +20,13 @@ export default function Header() {
                 alt="Logo Dark"
               />
             </Navbar.Brand>
+
             <Nav className="me-auto">
-              <Nav.Link href="#home">Dashboard</Nav.Link>
-              <Nav.Link href="#projects">Projects</Nav.Link>
-              <Nav.Link href="#rewards">Rewards</Nav.Link>
-              <Nav.Link href="#insights">Insights</Nav.Link>
-              <Nav.Link href="#help">Help</Nav.Link>
+              <Clock />
             </Nav>
           </Container>
           <Container className="justify-content-end">
-            <Row xs={1} md={1} className="g-4">
-              <Col md="auto">
-                <Clock />
-              </Col>
+            <Row xs={1} md={1} className="g-1">
               <Col md="auto">
                 <UpdateProfile />
               </Col>
