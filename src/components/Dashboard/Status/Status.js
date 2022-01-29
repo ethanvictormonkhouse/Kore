@@ -46,6 +46,21 @@ export default function Status() {
     else return "Offline";
   }
 
+  function getStatusStyling(status) {
+    switch (status) {
+      case "Available":
+        return "success";
+      case "On A Break":
+        return "success";
+      case "Busy":
+        return "danger";
+      case "In A Call":
+        return "danger";
+      default:
+        return "dark";
+    }
+  }
+
   return (
     <div>
       <Card className="m-2">
@@ -78,7 +93,11 @@ export default function Status() {
             <Row xs={1} md={1} lg={2} className="g-2">
               {teamMembers.map((member) => (
                 <Col key={`member-${member.id}`}>
-                  <Card bg="danger" text="light" className="m-2">
+                  <Card
+                    bg={getStatusStyling(findUserStatus(member.id))}
+                    text="light"
+                    className="m-2"
+                  >
                     <Card.Body>
                       <Card.Title className="text-center">
                         {member.data().fname} {member.data().lname}
