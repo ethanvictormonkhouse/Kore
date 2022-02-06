@@ -21,6 +21,7 @@ export default function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const avatarRef = useRef();
   const teamRef = useRef();
   const baseRef = useRef();
 
@@ -64,11 +65,13 @@ export default function Signup() {
         fnameRef.current.value,
         lnameRef.current.value,
         teamRef.current.value,
-        baseRef.current.value
+        baseRef.current.value,
+        avatarRef.current.files[0]
       ).then(() => {
         navigate("/");
       });
     } catch (err) {
+      console.log(err);
       setError("Whoops, you already have an account with us.");
     }
     setLoading(false);
@@ -154,6 +157,7 @@ export default function Signup() {
                     />
                   </FloatingLabel>
                 </Form.Group>
+
                 <Form.Group className="mt-2">
                   <FloatingLabel
                     controlId="team_input"
@@ -191,6 +195,10 @@ export default function Signup() {
                       ))}
                     </Form.Select>
                   </FloatingLabel>
+                </Form.Group>
+                <Form.Group controlId="avatar-upload" className="mt-2 mb-3">
+                  <Form.Label>Upload Avatar</Form.Label>
+                  <Form.Control ref={avatarRef} type="file" />
                 </Form.Group>
                 <Button disabled={loading} className="w-100 mt-4" type="submit">
                   Sign Up &nbsp;

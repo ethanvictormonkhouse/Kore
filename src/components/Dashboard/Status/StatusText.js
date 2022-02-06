@@ -1,20 +1,18 @@
 import React from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import TimeAgo from "react-timeago";
+import { Badge } from "react-bootstrap";
 
 function StatusText() {
   const { currentUserStatus } = useAuth();
 
   return (
-    <div>
-      <p className="text-center mb-2">
-        You changed your status to{" "}
-        <i>'{currentUserStatus.status.toLowerCase()}'</i>{" "}
-        <strong>
+    <div className="d-flex mb-2 justify-content-center">
+      <div>
+        <Badge pill bg="primary">
           <TimeAgo date={currentUserStatus.updated} />
-        </strong>
-        .
-      </p>
+        </Badge>
+      </div>
     </div>
   );
 }

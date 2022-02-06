@@ -5,6 +5,7 @@ import {
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
+  updateProfile,
   updateEmail,
   updatePassword,
 } from "firebase/auth";
@@ -19,7 +20,8 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
-import { db, rtdb } from "../services/firebase";
+import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, rtdb, storage } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
@@ -58,22 +60,29 @@ export function AuthProvider({ children }) {
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
   //function allowing the user to signup
-  function signup(email, password, fname, lname, team, base) {
-    const userData = {
-      fname: fname,
-      lname: lname,
-      email: email,
-      team: team,
-      base: base,
-    };
-    return createUserWithEmailAndPassword(auth, email, password).then(
-      async (res) => {
+  function signup(email, password, fname, lname, team, base, avatar) {
+    return createUserWithEmailAndPassword(auth, email, password)
+      .then(async (res) => {
+        await uploadBytes(sRef(storage, res.user.uid + ".png"), avatar);
+        return res;
+      })
+      .then(async (res) => {
+        const photoURL = await getDownloadURL(
+          sRef(storage, res.user.uid + ".png")
+        );
+        const userData = {
+          fname: fname,
+          lname: lname,
+          email: email,
+          team: team,
+          base: base,
+          avatar: photoURL,
+        };
         await setDoc(doc(db, "users", res.user.uid), userData);
         setCurrentUserData(userData);
         setLoading(false);
-        return currentUserData;
-      }
-    );
+        return res;
+      });
   }
 
   //function allowing the user to login
@@ -121,30 +130,6 @@ export function AuthProvider({ children }) {
     set(ref(rtdb, "users/" + user), status);
     setCurrentUserStatus(status);
   }
-
-  // function onlineMembers(teamMembers) {
-  //   var memberStatus = [];
-  //   teamMembers.forEach((member) => {
-  //     get(child(ref(rtdb), `users/${member.id}`))
-  //       .then((snapshot) => {
-  //         if (snapshot.exists()) {
-  //           memberStatus.push({
-  //             uid: snapshot.key,
-  //             status: snapshot.val().status,
-  //           });
-  //         } else {
-  //           memberStatus.push({
-  //             uid: snapshot.key,
-  //             status: "Offline",
-  //           });
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   });
-  //   setUsersStatus(memberStatus);
-  // }
 
   function userPresenceListener() {
     const usersRef = ref(rtdb, "users/");

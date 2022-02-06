@@ -5,21 +5,16 @@ import {
   ButtonGroup,
   ToggleButton,
   Row,
-  Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../contexts/AuthContext";
 
 import StatusText from "./StatusText";
+import UserCard from "./UserCard";
 
 export default function Status() {
-  const {
-    currentUser,
-    currentUserStatus,
-    updateStatus,
-    teamMembers,
-    userPresence,
-  } = useAuth();
+  const { currentUser, currentUserStatus, updateStatus, teamMembers } =
+    useAuth();
 
   const statuses = [
     {
@@ -41,33 +36,13 @@ export default function Status() {
     { name: "Away", variant: "outline-dark", icon: "fa-solid fa-moon" },
   ];
 
-  function findUserStatus(user) {
-    if (userPresence && userPresence[user]) return userPresence[user].status;
-    else return "Offline";
-  }
-
-  function getStatusStyling(status) {
-    switch (status) {
-      case "Available":
-        return "success";
-      case "On A Break":
-        return "success";
-      case "Busy":
-        return "danger";
-      case "In A Call":
-        return "danger";
-      default:
-        return "dark";
-    }
-  }
-
   return (
     <div>
       <Card className="m-2">
         <Card.Body>
-          <h2 className="text-center mb-4">Your Status</h2>
-
-          <StatusText />
+          <h2 className="text-center mb-2">
+            Your <strong>Status</strong>
+          </h2>
         </Card.Body>
         <Container className="d-flex justify-content-center mb-3">
           <ButtonGroup>
@@ -83,31 +58,23 @@ export default function Status() {
                   updateStatus(currentUser.uid, e.target.value, "")
                 }
               >
-                <FontAwesomeIcon icon={status.icon} /> {status.name}
+                <FontAwesomeIcon className="m-1" icon={status.icon} size="2x" />
               </ToggleButton>
             ))}
           </ButtonGroup>
         </Container>
+        <StatusText />
         <Container>
           <Card.Body>
-            <Row xs={1} md={1} lg={2} className="g-2">
+            <Row xs={1} md={1} lg={1} className="g-2">
               {teamMembers.map((member) => (
-                <Col key={`member-${member.id}`}>
-                  <Card
-                    bg={getStatusStyling(findUserStatus(member.id))}
-                    text="light"
-                    className="m-2"
-                  >
-                    <Card.Body>
-                      <Card.Title className="text-center">
-                        {member.data().fname} {member.data().lname}
-                      </Card.Title>
-                      <Card.Text className="text-center">
-                        {findUserStatus(member.id)}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
+                <UserCard
+                  id={member.id}
+                  key={member.id}
+                  fname={member.data().fname}
+                  lname={member.data().lname}
+                  avatar={member.data().avatar}
+                />
               ))}
             </Row>
           </Card.Body>
