@@ -26,7 +26,7 @@ export default function UserCard(props) {
   }
   return (
     <div>
-      <Card text="dark" className="m-1">
+      <Card text="dark" className="shadow-sm m-1">
         <Row xs={1} md={1} lg={2} className="g-1">
           <Col>
             <Card.Body>

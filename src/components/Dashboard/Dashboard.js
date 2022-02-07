@@ -30,7 +30,7 @@ export default function Dashboard() {
           <Col lg="9">
             <Row xs={1} md={1} lg={1} className="g-1">
               <Col>
-                <Card className="m-2">
+                <Card className="shadow m-2">
                   <Card.Body>
                     <Row>
                       <Col md="auto">
@@ -64,7 +64,7 @@ export default function Dashboard() {
               </Col>
               <Row xs={1} md={1} lg={2} className="g-1">
                 <Col>
-                  <Card bg="primary" text="light" className="m-2">
+                  <Card bg="primary" text="light" className="shadow m-2">
                     <Card.Body>
                       <h2 className="text-center mb-4">Your Active Tasks</h2>
                       <Card bg="primary" text="light" className="mb-2">
@@ -78,7 +78,7 @@ export default function Dashboard() {
                   </Card>
                 </Col>
                 <Col>
-                  <Card bg="primary" text="light" className="m-2">
+                  <Card bg="primary" text="light" className="shadow m-2">
                     <Card.Body>
                       <h2 className="text-center mb-4">Your Appraisals</h2>
 

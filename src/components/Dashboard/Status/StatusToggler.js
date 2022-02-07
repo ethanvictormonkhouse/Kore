@@ -28,7 +28,7 @@ export default function StatusToggler() {
   return (
     <div>
       <Container className="d-flex justify-content-center">
-        <ButtonGroup>
+        <ButtonGroup className="shadow">
           {statuses.map((status) => (
             <ToggleButton
               key={status.name}

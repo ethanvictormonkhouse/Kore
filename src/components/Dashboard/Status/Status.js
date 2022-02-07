@@ -11,7 +11,7 @@ export default function Status() {
 
   return (
     <div>
-      <Card className="m-2">
+      <Card className="shadow m-2">
         <Card.Body>
           <h2 className="text-center mb-2">
             Your <strong>Status</strong>
