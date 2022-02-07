@@ -5,7 +5,6 @@ import {
   signOut,
   onAuthStateChanged,
   sendPasswordResetEmail,
-  updateProfile,
   updateEmail,
   updatePassword,
 } from "firebase/auth";

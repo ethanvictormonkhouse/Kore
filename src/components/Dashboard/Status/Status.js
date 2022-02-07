@@ -1,40 +1,13 @@
 import React from "react";
-import {
-  Card,
-  Container,
-  ButtonGroup,
-  ToggleButton,
-  Row,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Card, Container, Row } from "react-bootstrap";
+
 import { useAuth } from "../../../contexts/AuthContext";
 
 import StatusText from "./StatusText";
 import UserCard from "./UserCard";
 
 export default function Status() {
-  const { currentUser, currentUserStatus, updateStatus, teamMembers } =
-    useAuth();
-
-  const statuses = [
-    {
-      name: "Available",
-      variant: "outline-success",
-      icon: "fa-solid fa-circle-check",
-    },
-    {
-      name: "Busy",
-      variant: "outline-danger",
-      icon: "fa-solid fa-circle-xmark",
-    },
-    { name: "In A Call", variant: "outline-danger", icon: "fa-solid fa-phone" },
-    {
-      name: "On A Break",
-      variant: "outline-success",
-      icon: "fa-solid fa-mug-saucer",
-    },
-    { name: "Away", variant: "outline-dark", icon: "fa-solid fa-moon" },
-  ];
+  const { teamMembers } = useAuth();
 
   return (
     <div>
@@ -44,25 +17,6 @@ export default function Status() {
             Your <strong>Status</strong>
           </h2>
         </Card.Body>
-        <Container className="d-flex justify-content-center mb-3">
-          <ButtonGroup>
-            {statuses.map((status) => (
-              <ToggleButton
-                key={status.name}
-                id={`status-${status.name}`}
-                type="radio"
-                variant={status.variant}
-                value={status.name}
-                checked={currentUserStatus.status === status.name}
-                onChange={(e) =>
-                  updateStatus(currentUser.uid, e.target.value, "")
-                }
-              >
-                <FontAwesomeIcon className="m-1" icon={status.icon} size="2x" />
-              </ToggleButton>
-            ))}
-          </ButtonGroup>
-        </Container>
         <StatusText />
         <Container>
           <Card.Body>

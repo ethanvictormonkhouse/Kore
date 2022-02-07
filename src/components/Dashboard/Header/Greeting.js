@@ -24,7 +24,7 @@ export default function Greeting() {
   return (
     <>
       <div>
-        {greeting} {currentUserData.fname}! 😎️
+        {greeting} <strong>{currentUserData.fname}</strong>! 😎️
       </div>
     </>
   );

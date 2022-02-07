@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Card, Alert, Row, Col, Image } from "react-bootstrap";
+import React from "react";
+import { Card, Row, Col, Image } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -7,9 +7,10 @@ import Status from "./Status/Status";
 import Header from "./Header/Header";
 import Greeting from "./Header/Greeting";
 import Toasts from "./Toasts/Toasts";
+import ActivityDetection from "./Status/ActivityDetection";
+import StatusToggler from "./Status/StatusToggler";
 
 export default function Dashboard() {
-  const [error, setError] = useState("");
   const {
     currentUser,
     currentUserData,
@@ -24,182 +25,78 @@ export default function Dashboard() {
     <>
       <div>
         <Header />
+        <ActivityDetection />
         <Row xs={1} md={1} lg={2} className="g-1 h-80">
           <Col lg="9">
-            <Row xs={1} md={1} lg={2} className="g-1">
+            <Row xs={1} md={1} lg={1} className="g-1">
               <Col>
                 <Card className="m-2">
                   <Card.Body>
-                    <div>
-                      <Image
-                        src={currentUserData.avatar}
-                        style={{ height: "auto", width: "20%" }}
-                        roundedCircle
-                        thumbnail
-                      />
-                    </div>
-                    <h2 className="text-center mb-4">
-                      <Greeting />
-                    </h2>
-
-                    <Row xs={1} md={1} lg={2} className="g-2">
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-user"
-                              size="2x"
-                            />
-                            <br />
-                            <strong>Full Name: </strong> {currentUserData.fname}{" "}
-                            {currentUserData.lname}
-                          </Card.Body>
-                        </Card>
+                    <Row>
+                      <Col md="auto">
+                        <div className="d-flex justify-content-center mb-2">
+                          <Image
+                            src={currentUserData.avatar}
+                            style={{ height: "8rem", width: "auto" }}
+                            roundedCircle
+                            thumbnail
+                          />
+                        </div>
                       </Col>
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-at"
-                              size="2x"
-                            />
+                      <Col className="text-left d-flex align-items-center justify-content-left">
+                        <div>
+                          <h2>
+                            <Greeting />
+                          </h2>
+                          <p>
+                            {teamData.name}
                             <br />
-                            <strong>Work Email: </strong> {currentUser.email}
-                          </Card.Body>
-                        </Card>
+                            {baseData.name} [+{baseData.code}]
+                          </p>
+                        </div>
                       </Col>
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-users"
-                              size="2x"
-                            />
-                            <br />
-                            <strong>Current Team: </strong> {teamData.name}
-                            <strong> [{teamData.status}]</strong>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-building"
-                              size="2x"
-                            />
-                            <br />
-                            <strong>Current Base: </strong> {baseData.name},{" "}
-                            {baseData.country}
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-globe"
-                              size="2x"
-                            />
-                            <br />
-                            <strong>Operating Region: </strong>{" "}
-                            {baseData.region}
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      <Col>
-                        <Card bg="secondary" text="primary">
-                          <Card.Body>
-                            <FontAwesomeIcon
-                              className="mb-2"
-                              icon="fa-solid fa-phone"
-                              size="2x"
-                            />
-                            <br />
-                            <strong>Base Dialling Code: </strong> +
-                            {baseData.code}
-                          </Card.Body>
-                        </Card>
+                      <Col className="text-left d-flex align-items-center justify-content-end">
+                        <StatusToggler />
                       </Col>
                     </Row>
                   </Card.Body>
                 </Card>
               </Col>
+              <Row xs={1} md={1} lg={2} className="g-1">
+                <Col>
+                  <Card bg="primary" text="light" className="m-2">
+                    <Card.Body>
+                      <h2 className="text-center mb-4">Your Active Tasks</h2>
+                      <Card bg="primary" text="light" className="mb-2">
+                        <Card.Body>
+                          <FontAwesomeIcon icon="fa-solid fa-pencil" /> Complete
+                          onDisconnect functionality for Project Sierra
+                        </Card.Body>
+                      </Card>
+                      <br />
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card bg="primary" text="light" className="m-2">
+                    <Card.Body>
+                      <h2 className="text-center mb-4">Your Appraisals</h2>
 
-              <Col>
-                <Card bg="primary" text="light" className="m-2">
-                  <Card.Body>
-                    {error && <Alert variant="danger">{error}</Alert>}
-                    <h2 className="text-center mb-4">Your Active Tasks</h2>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-pencil" /> Draft
-                        presentation for Operating Management team
-                      </Card.Body>
-                    </Card>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-pencil" /> Send
-                        invoice to Typed for January 2022 services
-                      </Card.Body>
-                    </Card>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-pencil" /> Schedule
-                        meeting with Sarah regarding the building-tier rating
-                        system
-                      </Card.Body>
-                    </Card>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-pencil" /> Complete
-                        onDisconnect functionality for Project Sierra
-                      </Card.Body>
-                    </Card>
-                    <br />
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col>
-                <Card bg="primary" text="light" className="m-2">
-                  <Card.Body>
-                    {error && <Alert variant="danger">{error}</Alert>}
-                    <h2 className="text-center mb-4">Your Appraisals</h2>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-gift" /> Mary{" "}
-                        <strong>gave you a reward!</strong>{" "}
-                        <i>
-                          "Great presentation. Loved the 18-month forecast."
-                        </i>
-                      </Card.Body>
-                    </Card>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-gift" /> Zack{" "}
-                        <strong>gave you a reward!</strong>{" "}
-                        <i>"Firestore briefing doc was so helpful! Thanks"</i>
-                      </Card.Body>
-                    </Card>
-                    <Card bg="primary" text="light" className="mb-2">
-                      <Card.Body>
-                        <FontAwesomeIcon icon="fa-solid fa-circle-exclamation" />{" "}
-                        Sarah <strong>has a suggestion!</strong>{" "}
-                        <i>
-                          "Tier-rating logic wasn't explicit. Let's schedule a
-                          call."
-                        </i>
-                      </Card.Body>
-                    </Card>
-                    <br />
-                  </Card.Body>
-                </Card>
-              </Col>
+                      <Card bg="primary" text="light" className="mb-2">
+                        <Card.Body>
+                          <FontAwesomeIcon icon="fa-solid fa-circle-exclamation" />{" "}
+                          Sarah <strong>has a suggestion!</strong>{" "}
+                          <i>
+                            "Tier-rating logic wasn't explicit. Let's schedule a
+                            call."
+                          </i>
+                        </Card.Body>
+                      </Card>
+                      <br />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
             </Row>
           </Col>
           <Col lg="3">
