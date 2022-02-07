@@ -9,6 +9,8 @@ import Greeting from "./Header/Greeting";
 import Toasts from "./Toasts/Toasts";
 import ActivityDetection from "./Status/ActivityDetection";
 import StatusToggler from "./Status/StatusToggler";
+import TaskForm from "./Projects/Tasks/TaskForm";
+import Tasks from "./Projects/Tasks/Tasks";
 
 export default function Dashboard() {
   const {
@@ -25,6 +27,7 @@ export default function Dashboard() {
     <>
       <div>
         <Header />
+
         <ActivityDetection />
         <Row xs={1} md={1} lg={2} className="g-1 h-80">
           <Col lg="9">
@@ -64,34 +67,21 @@ export default function Dashboard() {
               </Col>
               <Row xs={1} md={1} lg={2} className="g-1">
                 <Col>
-                  <Card bg="primary" text="light" className="shadow m-2">
+                  <Card text="dark" className="shadow m-2">
                     <Card.Body>
                       <h2 className="text-center mb-4">Your Active Tasks</h2>
-                      <Card bg="primary" text="light" className="mb-2">
-                        <Card.Body>
-                          <FontAwesomeIcon icon="fa-solid fa-pencil" /> Complete
-                          onDisconnect functionality for Project Sierra
-                        </Card.Body>
-                      </Card>
+                      <Tasks />
+
                       <br />
                     </Card.Body>
                   </Card>
                 </Col>
                 <Col>
-                  <Card bg="primary" text="light" className="shadow m-2">
+                  <Card className="shadow m-2">
                     <Card.Body>
-                      <h2 className="text-center mb-4">Your Appraisals</h2>
-
-                      <Card bg="primary" text="light" className="mb-2">
-                        <Card.Body>
-                          <FontAwesomeIcon icon="fa-solid fa-circle-exclamation" />{" "}
-                          Sarah <strong>has a suggestion!</strong>{" "}
-                          <i>
-                            "Tier-rating logic wasn't explicit. Let's schedule a
-                            call."
-                          </i>
-                        </Card.Body>
-                      </Card>
+                      <h2 className="text-center mb-4">Create Task</h2>
+                      {/* <FontAwesomeIcon icon="fa-solid fa-circle-exclamation" />{" "} */}
+                      <TaskForm />
                       <br />
                     </Card.Body>
                   </Card>

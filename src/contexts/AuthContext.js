@@ -17,6 +17,7 @@ import {
   collection,
   where,
   getDocs,
+  addDoc,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -116,6 +117,17 @@ export function AuthProvider({ children }) {
     return sendPasswordResetEmail(auth, email);
   }
 
+  /*----------FIRESTORE FUNCTIONS----------*/
+
+  async function createTask(title, desc, assigned_to) {
+    return await addDoc(collection(db, "tasks"), {
+      title: title,
+      desc: desc,
+      assigned_to: assigned_to,
+      created_by: auth.currentUser.uid,
+    });
+  }
+
   /*----------REALTIME DATABASE FUNCTIONS----------*/
 
   //function to update the user's status on Firebase
@@ -157,7 +169,6 @@ export function AuthProvider({ children }) {
           where("team", "==", userDocData.data().team)
         );
         const teamMembersDocs = await getDocs(q);
-        // onlineMembers(teamMembersDocs.docs);
 
         if (userDocData.exists()) {
           //set userData and userStatus if a profile is found in Firestore
@@ -191,6 +202,7 @@ export function AuthProvider({ children }) {
     changeEmail,
     changePassword,
     updateStatus,
+    createTask,
   };
 
   return (
