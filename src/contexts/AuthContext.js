@@ -119,10 +119,11 @@ export function AuthProvider({ children }) {
 
   /*----------FIRESTORE FUNCTIONS----------*/
 
-  async function createTask(title, desc, assigned_to) {
+  async function createTask(title, desc, status, assigned_to) {
     return await addDoc(collection(db, "tasks"), {
       title: title,
       desc: desc,
+      status: status,
       assigned_to: assigned_to,
       created_by: auth.currentUser.uid,
     });
@@ -187,7 +188,6 @@ export function AuthProvider({ children }) {
 
   /*----------CONTEXT OBJECT----------*/
   const value = {
-    //object of variables and functions to export to the rest of the application
     currentUser,
     currentUserStatus,
     currentUserData,

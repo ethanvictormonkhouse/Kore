@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../services/firebase";
 import { useAuth } from "../../../../contexts/AuthContext";
 import TaskCard from "./TaskCard";
 
 export default function Tasks() {
+  const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
   const { currentUser } = useAuth();
 
   useEffect(() => {
-    let unsubscribed = false;
+    setLoading(true);
 
     const q = query(
       collection(db, "tasks"),
       where("assigned_to", "==", currentUser.uid)
     );
 
-    getDocs(q)
-      .then((querySnapshot) => {
-        if (unsubscribed) return; // unsubscribed? do nothing.
-
-        const taskArray = querySnapshot.docs.map((doc) => ({
+    onSnapshot(q, (querySnapshot) => {
+      if (!querySnapshot) return;
+      const tasks = [];
+      querySnapshot.forEach((doc) =>
+        tasks.push({
           ...doc.data(),
           id: doc.id,
-        }));
+        })
+      );
+      setTasks(tasks);
+    });
 
-        setTasks(taskArray);
-      })
-      .catch((err) => {
-        if (unsubscribed) return; // unsubscribed? do nothing.
-
-        // TODO: Handle errors
-        console.error("Failed to retrieve data", err);
-      });
-
-    return () => (unsubscribed = true);
+    return () => {
+      setLoading(false);
+    };
   }, []);
+
   return (
     <div>
       {tasks.map((task) => (
@@ -44,6 +42,7 @@ export default function Tasks() {
           key={task.id}
           title={task.title}
           desc={task.desc}
+          status={task.status}
           created={task.created_by}
         />
       ))}

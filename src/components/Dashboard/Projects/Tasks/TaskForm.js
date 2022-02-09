@@ -18,6 +18,7 @@ export default function TaskForm() {
       await createTask(
         titleRef.current.value,
         descRef.current.value,
+        "Not Started",
         assignedRef.current.value
       ).then((res) => {
         setLoading(false);
