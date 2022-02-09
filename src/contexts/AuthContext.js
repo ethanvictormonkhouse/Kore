@@ -18,6 +18,7 @@ import {
   where,
   getDocs,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -129,6 +130,19 @@ export function AuthProvider({ children }) {
     });
   }
 
+  async function createRoadblock(task, issue, status) {
+    return await addDoc(collection(db, "roadblocks"), {
+      task: task,
+      issue: issue,
+      status: status,
+      created_by: auth.currentUser.uid,
+    }).then(async () => {
+      return await updateDoc(doc(db, "tasks", task), {
+        status: "Open Roadblock",
+      });
+    });
+  }
+
   /*----------REALTIME DATABASE FUNCTIONS----------*/
 
   //function to update the user's status on Firebase
@@ -203,6 +217,7 @@ export function AuthProvider({ children }) {
     changePassword,
     updateStatus,
     createTask,
+    createRoadblock,
   };
 
   return (

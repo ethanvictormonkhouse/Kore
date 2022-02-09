@@ -8,7 +8,7 @@ export default function TaskCard(props) {
   const { teamMembers, currentUser } = useAuth();
 
   function findMember(user) {
-    if (currentUser)
+    if (currentUser && teamMembers[1])
       return teamMembers.find((element) => element.id === user).data();
     else return "Unknown";
   }
@@ -37,7 +37,7 @@ export default function TaskCard(props) {
               Status: <Badge>{props.status}</Badge>
             </Col>
             <Col md="auto">
-              <TaskOptions id={props.id} />
+              <TaskOptions {...props} />
             </Col>
           </Row>
         </Card.Body>
