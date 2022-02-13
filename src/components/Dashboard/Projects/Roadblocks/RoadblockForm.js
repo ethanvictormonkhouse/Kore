@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useAuth } from "../../../../contexts/AuthContext";
 
-export default function TaskForm(props) {
+export default function RoadblockForm(props) {
   const issueRef = useRef();
 
   const { createRoadblock } = useAuth();
@@ -22,13 +22,17 @@ export default function TaskForm(props) {
     e.preventDefault();
     try {
       setLoading(true);
-      await createRoadblock(props.id, issueRef.current.value, "Open").then(
-        (res) => {
-          setResponse("Successfully submitted roadblock.");
-          setLoading(false);
-          return res;
-        }
-      );
+
+      await createRoadblock(
+        props.id,
+        props.title,
+        issueRef.current.value,
+        "Open"
+      ).then((res) => {
+        setResponse("Successfully submitted roadblock.");
+        setLoading(false);
+        return res;
+      });
     } catch (err) {
       console.log(err.message);
       setResponse("There was an issue submitting your roadblock.");

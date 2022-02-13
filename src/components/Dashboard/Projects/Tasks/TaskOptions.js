@@ -4,7 +4,7 @@ import { updateDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../../../services/firebase";
 import { Button } from "react-bootstrap";
 
-import RoadblockModal from "./RoadblockModal";
+import RoadblockModal from "../Roadblocks/RoadblockModal";
 
 export default function TaskOptions(props) {
   const [modalShow, setModalShow] = useState(false);

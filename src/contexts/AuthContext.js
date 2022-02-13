@@ -78,6 +78,7 @@ export function AuthProvider({ children }) {
           team: team,
           base: base,
           avatar: photoURL,
+          vfp: { realized: "0", unrealized: "0", multiplier: "3" },
         };
         await setDoc(doc(db, "users", res.user.uid), userData);
         setCurrentUserData(userData);
@@ -130,14 +131,15 @@ export function AuthProvider({ children }) {
     });
   }
 
-  async function createRoadblock(task, issue, status) {
+  async function createRoadblock(task_id, title, issue, status) {
     return await addDoc(collection(db, "roadblocks"), {
-      task: task,
+      task_id: task_id,
+      title: title,
       issue: issue,
       status: status,
       created_by: auth.currentUser.uid,
     }).then(async () => {
-      return await updateDoc(doc(db, "tasks", task), {
+      return await updateDoc(doc(db, "tasks", task_id), {
         status: "Open Roadblock",
       });
     });

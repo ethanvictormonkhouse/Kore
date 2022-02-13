@@ -1,9 +1,9 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-import RoadblockForm from "../Tasks/RoadblockForm";
+import TaskForm from "../Tasks/TaskForm";
 
-export default function RoadblockModal(props) {
+export default function TaskModal(props) {
   return (
     <Modal
       {...props}
@@ -12,15 +12,13 @@ export default function RoadblockModal(props) {
       centered
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Heuston, we have a problem!
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">New Task</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        So it seems you've run into an issue. That's not a bother! Fill in some
-        details and let's see if your team can help you out.
+        Let's get working! Fill in the detail below, and assign it to a team
+        member.
       </Modal.Body>
-      <RoadblockForm {...props} />
+      <TaskForm {...props} />
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>

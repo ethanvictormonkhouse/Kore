@@ -2,33 +2,33 @@ import React, { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../services/firebase";
 import { useAuth } from "../../../../contexts/AuthContext";
-import TaskCard from "./TaskCard";
 
-export default function Tasks() {
+import AppraisalsCard from "./AppraisalsCard";
+
+export default function Appraisals() {
   const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [appraisals, setAppraisals] = useState([]);
   const { currentUser } = useAuth();
 
   useEffect(() => {
     setLoading(true);
 
     const q = query(
-      //use composite index in firebase to search
       collection(db, "tasks"),
-      where("assigned_to", "==", currentUser.uid),
-      where("status", "!=", "Complete")
+      where("status", "==", "Complete"),
+      where("assigned_to", "!=", currentUser.uid)
     );
 
     onSnapshot(q, (querySnapshot) => {
       if (!querySnapshot) return;
-      const tasks = [];
+      const appraisals = [];
       querySnapshot.forEach((doc) =>
-        tasks.push({
+        appraisals.push({
           ...doc.data(),
           id: doc.id,
         })
       );
-      setTasks(tasks);
+      setAppraisals(appraisals);
     });
 
     return () => {
@@ -38,14 +38,15 @@ export default function Tasks() {
 
   return (
     <div>
-      {tasks.map((task) => (
-        <TaskCard
-          id={task.id}
-          key={task.id}
-          title={task.title}
-          desc={task.desc}
-          status={task.status}
-          created={task.created_by}
+      {appraisals.map((roadblock) => (
+        <AppraisalsCard
+          id={roadblock.id}
+          key={roadblock.id}
+          title={roadblock.title}
+          task={roadblock.task}
+          issue={roadblock.issue}
+          status={roadblock.status}
+          assigned={roadblock.assigned_to}
         />
       ))}
     </div>

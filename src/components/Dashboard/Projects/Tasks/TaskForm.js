@@ -18,7 +18,7 @@ export default function TaskForm() {
       await createTask(
         titleRef.current.value,
         descRef.current.value,
-        "Not Started",
+        "Incomplete",
         assignedRef.current.value
       ).then((res) => {
         setLoading(false);
@@ -52,7 +52,7 @@ export default function TaskForm() {
                   label="Additional Details"
                   className="mb-3"
                 >
-                  <Form.Control as="textarea" ref={descRef} required rows={3} />
+                  <Form.Control as="textarea" ref={descRef} rows={3} />
                 </FloatingLabel>
               </Form.Group>
               <Form.Group className="mt-2">
