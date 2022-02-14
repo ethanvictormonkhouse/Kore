@@ -18,7 +18,9 @@ export default function TaskModal(props) {
         Let's get working! Fill in the detail below, and assign it to a team
         member.
       </Modal.Body>
-      <TaskForm {...props} />
+      <div className="m-3">
+        <TaskForm {...props} />
+      </div>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>

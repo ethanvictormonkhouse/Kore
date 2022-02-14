@@ -1,16 +1,12 @@
 import React from "react";
-import { Card, Row, Col, Badge, ButtonGroup, Button } from "react-bootstrap";
+import { Card, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function RoadblockCard(props) {
-  const { teamMembers, currentUser } = useAuth();
+import AppraisalsButton from "./AppraisalsButton";
 
-  function findMember(user) {
-    if (currentUser && teamMembers[1])
-      return teamMembers.find((element) => element.id === user).data();
-    else return "Unknown";
-  }
+export default function RoadblockCard(props) {
+  const { findUser } = useAuth();
 
   return (
     <div>
@@ -26,15 +22,13 @@ export default function RoadblockCard(props) {
                 {props.status}
               </Badge>{" "}
               <Badge>
-                {findMember(props.assigned).fname +
+                {findUser(props.assigned).fname +
                   " " +
-                  findMember(props.assigned).lname}
+                  findUser(props.assigned).lname}
               </Badge>{" "}
             </Col>
             <Col md="auto">
-              <Button variant="secondary">
-                <FontAwesomeIcon icon="fa-solid fa-comment" />
-              </Button>
+              <AppraisalsButton {...props} />
             </Col>
           </Row>
         </Card.Body>

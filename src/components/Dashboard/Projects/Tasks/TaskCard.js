@@ -5,13 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskOptions from "./TaskOptions";
 
 export default function TaskCard(props) {
-  const { teamMembers, currentUser } = useAuth();
-
-  function findMember(user) {
-    if (currentUser && teamMembers[1])
-      return teamMembers.find((element) => element.id === user).data();
-    else return "Unknown";
-  }
+  const { findUser } = useAuth();
 
   return (
     <div>
@@ -29,9 +23,9 @@ export default function TaskCard(props) {
               <p>{props.desc}</p>
               Assigned By:{" "}
               <Badge>
-                {findMember(props.created).fname +
+                {findUser(props.created).fname +
                   " " +
-                  findMember(props.created).lname}
+                  findUser(props.created).lname}
               </Badge>{" "}
               <br />
               Status: <Badge>{props.status}</Badge>

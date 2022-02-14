@@ -16,20 +16,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function AppraisalsForm(props) {
-  const issueRef = useRef();
-  const { createRoadblock } = useAuth();
+  const commentRef = useRef();
+  const { createAppraisal, findUser } = useAuth();
 
   const appraisals = [
     {
       type: "positive",
-      points: "3",
       variant: "success",
       icon: "fa-solid fa-thumbs-up",
       emotion: "fa-regular fa-face-grin-stars",
     },
     {
       type: "negative",
-      points: "3",
       variant: "danger",
       icon: "fa-solid fa-thumbs-down",
       emotion: "fa-regular fa-face-surprise",
@@ -45,19 +43,20 @@ export default function AppraisalsForm(props) {
     try {
       setLoading(true);
 
-      await createRoadblock(
+      await createAppraisal(
         props.id,
         props.title,
-        issueRef.current.value,
-        "Open"
+        appraisalType.type,
+        commentRef.current.value,
+        props.assigned
       ).then((res) => {
-        setResponse("Successfully submitted roadblock.");
+        setResponse("Successfully submitted appraisal.");
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
-      setResponse("There was an issue submitting your roadblock.");
+      setResponse("There was an issue submitting your appraisal.");
       setLoading(false);
       return err.message;
     }
@@ -77,16 +76,28 @@ export default function AppraisalsForm(props) {
                   readOnly
                 />
               </Form.Group>
-              <Form.Group id="issue">
+              <Form.Group className="mb-3">
+                <Form.Control
+                  controlId="task"
+                  type="text"
+                  placeholder={
+                    findUser(props.assigned).fname +
+                    " " +
+                    findUser(props.assigned).lname
+                  }
+                  readOnly
+                />
+              </Form.Group>
+              <Form.Group id="comments" className="mb-4">
                 <FloatingLabel
-                  controlId="issue_input"
+                  controlId="comments_input"
                   label="Comments"
                   className="mb-3"
                 >
                   <Form.Control
                     as="textarea"
                     rows="6"
-                    ref={issueRef}
+                    ref={commentRef}
                     required
                   />
                 </FloatingLabel>

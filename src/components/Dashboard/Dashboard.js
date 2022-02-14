@@ -13,7 +13,6 @@ import TaskButton from "./Projects/Tasks/TaskButton";
 import Roadblocks from "../Dashboard/Projects/Roadblocks/Roadblocks";
 import Appraisals from "./Projects/Appraisals/Appraisals";
 import VFPDetails from "../Profile/VFPDetails";
-import AppraisalsForm from "../Dashboard/Projects/Appraisals/AppraisalsForm";
 
 export default function Dashboard() {
   const {
@@ -116,21 +115,6 @@ export default function Dashboard() {
                           style={{ minHeight: "20vh", maxHeight: "20vh" }}
                         >
                           <Roadblocks />
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col>
-                    <Card className="shadow m-2">
-                      <Card.Body>
-                        <h2 className="text-center mb-4">
-                          Open <strong>Roadblocks</strong>
-                        </h2>
-                        <div
-                          className=" m-2 overflow-auto"
-                          style={{ minHeight: "20vh", maxHeight: "20vh" }}
-                        >
-                          <AppraisalsForm />
                         </div>
                       </Card.Body>
                     </Card>

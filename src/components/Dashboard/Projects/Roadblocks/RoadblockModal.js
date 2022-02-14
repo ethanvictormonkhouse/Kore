@@ -20,7 +20,9 @@ export default function RoadblockModal(props) {
         So it seems you've run into an issue. That's not a bother! Fill in some
         details and let's see if your team can help you out.
       </Modal.Body>
-      <RoadblockForm {...props} />
+      <div className="m-3">
+        <RoadblockForm {...props} />
+      </div>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>

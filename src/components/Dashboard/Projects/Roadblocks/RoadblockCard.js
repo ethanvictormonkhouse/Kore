@@ -4,13 +4,7 @@ import { useAuth } from "../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function RoadblockCard(props) {
-  const { teamMembers, currentUser } = useAuth();
-
-  function findMember(user) {
-    if (currentUser && teamMembers[1])
-      return teamMembers.find((element) => element.id === user).data();
-    else return "Unknown";
-  }
+  const { findUser } = useAuth();
 
   return (
     <div>
@@ -24,14 +18,15 @@ export default function RoadblockCard(props) {
                 <Badge bg="warning" text="dark">
                   {props.status}
                 </Badge>{" "}
+                {console.log(findUser(props.created))}
                 <Badge>
-                  {findMember(props.created).fname +
+                  {findUser(props.created).fname +
                     " " +
-                    findMember(props.created).lname}
+                    findUser(props.created).lname}
                 </Badge>{" "}
               </h5>
               <p>
-                {findMember(props.created).fname} is having an issue with their
+                {findUser(props.created).fname} is having an issue with their
                 task to '<i>{props.title}</i>'
               </p>
             </Col>

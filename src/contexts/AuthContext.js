@@ -19,6 +19,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  FieldValue,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -57,6 +58,8 @@ export function AuthProvider({ children }) {
     email: "...",
     team: "...",
     base: "...",
+    avatar: "...",
+    vfp: "...",
   });
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
@@ -78,7 +81,7 @@ export function AuthProvider({ children }) {
           team: team,
           base: base,
           avatar: photoURL,
-          vfp: { realized: "0", unrealized: "0", multiplier: "3" },
+          vfp: { realized: 0, unrealized: 0, multiplier: 3 },
         };
         await setDoc(doc(db, "users", res.user.uid), userData);
         setCurrentUserData(userData);
@@ -121,6 +124,26 @@ export function AuthProvider({ children }) {
 
   /*----------FIRESTORE FUNCTIONS----------*/
 
+  function findUser(user) {
+    try {
+      if (currentUser && teamMembers[1]) {
+        const userW = teamMembers.find((element) => element.id === user);
+        return userW.data();
+      } else return "Unknown";
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  function findUserStatus(user) {
+    if (userPresence && userPresence[user]) return userPresence[user].status;
+    else return "Offline";
+  }
+
+  async function getUserData(user) {
+    return await getDoc(doc(db, "users", user));
+  }
+
   async function createTask(title, desc, status, assigned_to) {
     return await addDoc(collection(db, "tasks"), {
       title: title,
@@ -131,16 +154,39 @@ export function AuthProvider({ children }) {
     });
   }
 
-  async function createRoadblock(task_id, title, issue, status) {
+  async function createRoadblock(task_id, task_title, issue, status) {
     return await addDoc(collection(db, "roadblocks"), {
       task_id: task_id,
-      title: title,
+      task_title: task_title,
       issue: issue,
       status: status,
       created_by: auth.currentUser.uid,
     }).then(async () => {
       return await updateDoc(doc(db, "tasks", task_id), {
         status: "Open Roadblock",
+      });
+    });
+  }
+
+  async function createAppraisal(task_id, task_title, type, comment, given_to) {
+    return await addDoc(collection(db, "appraisal"), {
+      task_id: task_id,
+      task_title: task_title,
+      type: type,
+      comment: comment,
+      given_to: given_to,
+      created_by: auth.currentUser.uid,
+    }).then(async () => {
+      return await getUserData(given_to).then(async (res) => {
+        if (type === "positive") {
+          return await updateDoc(doc(db, "users", given_to), {
+            "vfp.unrealized": res.data().vfp.unrealized + 3,
+          });
+        } else {
+          return await updateDoc(doc(db, "users", given_to), {
+            "vfp.multiplier": res.data().vfp.multiplier - 1,
+          });
+        }
       });
     });
   }
@@ -170,33 +216,44 @@ export function AuthProvider({ children }) {
   /*----------AUTH STATE LISTENER----------*/
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
+      setLoading(true);
       setCurrentUser(user); //set currentUser if authentication state changes
       if (user) {
+        console.log("user");
         onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
         userPresenceListener();
-        const userDocData = await getDoc(doc(db, "users", user.uid));
-        const baseDocData = await getDoc(
-          doc(db, "bases", userDocData.data().base)
-        );
-        const teamDocData = await getDoc(
-          doc(db, "teams", userDocData.data().team)
-        );
-        const q = query(
-          collection(db, "users"),
-          where("team", "==", userDocData.data().team)
-        );
-        const teamMembersDocs = await getDocs(q);
 
-        if (userDocData.exists()) {
-          //set userData and userStatus if a profile is found in Firestore
-          updateStatus(user.uid, "Available", "");
-          setCurrentUserData(userDocData.data());
-          setTeamData(teamDocData.data());
-          setBaseData(baseDocData.data());
-          setTeamMembers(teamMembersDocs.docs);
-        }
-        setLoading(false);
-        return userDocData;
+        await getDoc(doc(db, "users", user.uid)).then((res) => {
+          const promises = [];
+
+          const q = query(
+            collection(db, "users"),
+            where("team", "==", res.data().team)
+          );
+
+          promises.push(res);
+          promises.push(getDoc(doc(db, "bases", res.data().base)));
+          promises.push(getDoc(doc(db, "teams", res.data().team)));
+          promises.push(getDocs(q));
+
+          Promise.all(promises)
+            .then((res) => {
+              updateStatus(user.uid, "Available", "");
+              setCurrentUserData(res[0].data());
+              setBaseData(res[1].data());
+              setTeamData(res[2].data());
+
+              setTeamMembers(res[3].docs);
+              console.log(res[3].docs);
+            })
+            .catch((err) => {
+              console.log(err.message);
+            })
+            .finally(() => {
+              setLoading(false);
+              return currentUserData;
+            });
+        });
       }
       setLoading(false);
     });
@@ -220,6 +277,9 @@ export function AuthProvider({ children }) {
     updateStatus,
     createTask,
     createRoadblock,
+    createAppraisal,
+    findUser,
+    findUserStatus,
   };
 
   return (

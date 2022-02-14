@@ -3,12 +3,7 @@ import { Card, Image, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContext";
 
 export default function UserCard(props) {
-  const { userPresence } = useAuth();
-
-  function findUserStatus(user) {
-    if (userPresence && userPresence[user]) return userPresence[user].status;
-    else return "Offline";
-  }
+  const { findUserStatus } = useAuth();
 
   function getStatusStyling(status) {
     switch (status) {
