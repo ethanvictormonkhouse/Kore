@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container, Row } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 
 import { useAuth } from "../../../contexts/AuthContext";
 
@@ -18,21 +18,19 @@ export default function Status() {
           </h2>
         </Card.Body>
         <StatusText />
-        <Container>
-          <Card.Body>
-            <Row xs={1} md={1} lg={1} className="g-2">
-              {teamMembers.map((member) => (
-                <UserCard
-                  id={member.id}
-                  key={member.id}
-                  fname={member.data().fname}
-                  lname={member.data().lname}
-                  avatar={member.data().avatar}
-                />
-              ))}
-            </Row>
-          </Card.Body>
-        </Container>
+        <Card.Body>
+          <Row xs={1} md={1} lg={1} className="g-2">
+            {teamMembers.map((member) => (
+              <UserCard
+                id={member.id}
+                key={member.id}
+                fname={member.data().fname}
+                lname={member.data().lname}
+                avatar={member.data().avatar}
+              />
+            ))}
+          </Row>
+        </Card.Body>
       </Card>
     </div>
   );

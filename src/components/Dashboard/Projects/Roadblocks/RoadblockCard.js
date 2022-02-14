@@ -18,7 +18,6 @@ export default function RoadblockCard(props) {
                 <Badge bg="warning" text="dark">
                   {props.status}
                 </Badge>{" "}
-                {console.log(findUser(props.created))}
                 <Badge>
                   {findUser(props.created).fname +
                     " " +

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import AppraisalsButton from "./AppraisalsButton";
 
-export default function RoadblockCard(props) {
+export default function AppraisalsCard(props) {
   const { findUser } = useAuth();
 
   return (

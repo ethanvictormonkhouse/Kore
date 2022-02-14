@@ -19,7 +19,6 @@ import {
   getDocs,
   addDoc,
   updateDoc,
-  FieldValue,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -85,23 +84,16 @@ export function AuthProvider({ children }) {
         };
         await setDoc(doc(db, "users", res.user.uid), userData);
         setCurrentUserData(userData);
-        setLoading(false);
+
         return res;
       });
   }
 
   //function allowing the user to login
   function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password).then(
-      async (res) => {
-        const docSnap = await getDoc(doc(db, "users", res.user.uid));
-        if (docSnap.exists()) {
-          setCurrentUserData(docSnap.data());
-        }
-        setLoading(false);
-        return docSnap;
-      }
-    );
+    return signInWithEmailAndPassword(auth, email, password).then((res) => {
+      return res;
+    });
   }
 
   //function allowing the user to logout
@@ -242,16 +234,14 @@ export function AuthProvider({ children }) {
               setCurrentUserData(res[0].data());
               setBaseData(res[1].data());
               setTeamData(res[2].data());
-
               setTeamMembers(res[3].docs);
-              console.log(res[3].docs);
             })
             .catch((err) => {
               console.log(err.message);
             })
             .finally(() => {
               setLoading(false);
-              return currentUserData;
+              return currentUser;
             });
         });
       }
