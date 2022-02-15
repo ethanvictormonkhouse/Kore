@@ -169,6 +169,24 @@ export function AuthProvider({ children }) {
     });
   }
 
+  /*----------CREATE SOLUTION FUNCTION----------*/
+  async function createSolution(roadblock_id, task_id, solution) {
+    return await addDoc(collection(db, "solutions"), {
+      task_id: task_id,
+      roadblock_id: roadblock_id,
+      solution: solution,
+      created_by: auth.currentUser.uid,
+    }).then(async () => {
+      const promises = [];
+      promises.push(
+        updateDoc(doc(db, "tasks", task_id), {
+          status: "Awaiting Solution Response",
+        })
+      );
+      promises.push(updateVFP(auth.currentUser.uid, 1));
+    });
+  }
+
   /*----------CREATE APPRAISAL FUNCTION----------*/
   async function createAppraisal(task_id, task_title, type, comment, given_to) {
     return await addDoc(collection(db, "appraisal"), {
@@ -180,16 +198,40 @@ export function AuthProvider({ children }) {
       created_by: auth.currentUser.uid,
     }).then(async () => {
       return await getUserData(given_to).then(async (res) => {
+        const promises = [];
         if (type === "positive") {
-          return await updateDoc(doc(db, "users", given_to), {
-            "vfp.unrealized":
-              res.data().vfp.unrealized + 3 * res.data().vfp.multiplier,
-          });
+          promises.push(updateVFP(given_to, 3));
+          promises.push(updateVFP(auth.currentUser.uid, 1));
         } else {
-          return await updateDoc(doc(db, "users", given_to), {
-            "vfp.multiplier": res.data().vfp.multiplier - 0.25,
-          });
+          promises.push(updateMultiplier(given_to, 0.25));
         }
+
+        Promise.all(promises)
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+      });
+    });
+  }
+
+  /*----------UPDATE VFP FUNCTION----------*/
+  async function updateVFP(user, vfp) {
+    return await getUserData(user).then(async (res) => {
+      return await updateDoc(doc(db, "users", user), {
+        "vfp.unrealized":
+          res.data().vfp.unrealized + vfp * res.data().vfp.multiplier,
+      });
+    });
+  }
+
+  /*----------UPDATE MULTIPLIER FUNCTION----------*/
+  async function updateMultiplier(user, multiplier) {
+    return await getUserData(user).then(async (res) => {
+      return await updateDoc(doc(db, "users", user), {
+        "vfp.multiplier": res.data().vfp.multiplier - multiplier,
       });
     });
   }
@@ -282,6 +324,7 @@ export function AuthProvider({ children }) {
     createAppraisal,
     findUser,
     findUserStatus,
+    createSolution,
   };
 
   return (

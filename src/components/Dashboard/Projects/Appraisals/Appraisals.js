@@ -38,15 +38,15 @@ export default function Appraisals() {
 
   return (
     <div>
-      {appraisals.map((roadblock) => (
+      {appraisals.map((appraisal) => (
         <AppraisalsCard
-          id={roadblock.id}
-          key={roadblock.id}
-          title={roadblock.title}
-          task={roadblock.task}
-          issue={roadblock.issue}
-          status={roadblock.status}
-          assigned={roadblock.assigned_to}
+          id={appraisal.id}
+          key={appraisal.id}
+          title={appraisal.title}
+          task={appraisal.task}
+          issue={appraisal.issue}
+          status={appraisal.status}
+          assigned={appraisal.assigned_to}
         />
       ))}
     </div>

@@ -42,7 +42,6 @@ export default function AppraisalsForm(props) {
     e.preventDefault();
     try {
       setLoading(true);
-
       await createAppraisal(
         props.id,
         props.title,

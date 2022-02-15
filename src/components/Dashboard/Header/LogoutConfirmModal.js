@@ -33,8 +33,8 @@ export default function LogoutConfirmModal(props) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          By logging out, all data used to identify your online presence and
-          activity will be <strong>removed immediately</strong>. Kore{" "}
+          By logging out, all data about your online presence and activity in
+          this session will be <strong>removed immediately</strong>. Kore{" "}
           <strong>does not</strong> store this information.
           <br />
           <br />

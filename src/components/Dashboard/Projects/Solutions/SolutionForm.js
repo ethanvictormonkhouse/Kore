@@ -12,30 +12,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function SolutionForm(props) {
-  const issueRef = useRef();
-
-  const { createRoadblock } = useAuth();
+  const solutionRef = useRef();
+  console.log(props);
+  const { createSolution } = useAuth();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     try {
       setLoading(true);
-
-      await createRoadblock(
+      await createSolution(
         props.id,
-        props.title,
-        issueRef.current.value,
-        "Open"
+        props.task,
+        solutionRef.current.value
       ).then((res) => {
-        setResponse("Successfully submitted roadblock.");
+        setResponse("Successfully submitted solution.");
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
-      setResponse("There was an issue submitting your roadblock.");
+      setResponse("There was an issue submitting your solution.");
       setLoading(false);
       return err.message;
     }
@@ -72,7 +71,7 @@ export default function SolutionForm(props) {
                   <Form.Control
                     as="textarea"
                     rows="6"
-                    ref={issueRef}
+                    ref={solutionRef}
                     required
                   />
                 </FloatingLabel>
