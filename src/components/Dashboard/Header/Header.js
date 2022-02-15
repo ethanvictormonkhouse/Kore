@@ -9,11 +9,7 @@ export default function Header() {
   return (
     <div>
       <>
-        <Navbar
-          style={{ margin: "0 0 2vh 0", height: "12vh", width: "auto" }}
-          bg="light"
-          className="shadow mb-30vh"
-        >
+        <Navbar bg="light" className="shadow mb-30vh">
           <Container>
             <Navbar.Brand href="#home">
               <img

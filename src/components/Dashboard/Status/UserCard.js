@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Image, Row, Col, Badge } from "react-bootstrap";
+import { Card, Image, Row, Col, Badge, Container } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContext";
 
 export default function UserCard(props) {
@@ -21,10 +21,10 @@ export default function UserCard(props) {
   }
   return (
     <div>
-      <Card text="dark" className="shadow-sm m-1">
-        <Row xs={1} md={1} lg={2} className="g-1">
-          <Col>
-            <Card.Body>
+      <Container>
+        <Card text="dark" className="shadow-sm mb-2">
+          <Row xs={1} md={1} lg={2}>
+            <Col md="auto">
               <div className="text-center">
                 <Image
                   src={props.avatar}
@@ -36,25 +36,25 @@ export default function UserCard(props) {
                   border="5px"
                 />
               </div>
-            </Card.Body>
-          </Col>
-          <Col className="text-left d-flex align-items-center justify-content-left">
-            <div>
-              <Card.Title>
-                {props.fname} {props.lname}
-              </Card.Title>
-              <Badge
-                pill
-                className="text-center"
-                bg={getStatusStyling(findUserStatus(props.id))}
-              >
-                {findUserStatus(props.id)}
-              </Badge>
-              <br />
-            </div>
-          </Col>
-        </Row>
-      </Card>
+            </Col>
+            <Col className="text-left d-flex align-items-center justify-content-left">
+              <div>
+                <h5>
+                  {props.fname} {props.lname}
+                </h5>
+                <Badge
+                  pill
+                  className="text-center"
+                  bg={getStatusStyling(findUserStatus(props.id))}
+                >
+                  {findUserStatus(props.id)}
+                </Badge>
+                <br />
+              </div>
+            </Col>
+          </Row>
+        </Card>
+      </Container>
     </div>
   );
 }
