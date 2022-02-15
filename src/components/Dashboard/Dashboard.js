@@ -89,28 +89,20 @@ export default function Dashboard() {
                     style={{
                       margin: "0 0 2vh 0",
                       height: "62vh",
-                      width: "auto",
                     }}
                   >
-                    <Card.Body>
-                      <h2 className="text-center mb-4">
+                    <Card.Header>
+                      <h2 className="text-center m-0">
                         Your Active <strong>Tasks</strong>
                       </h2>
-
-                      <div
-                        className="overflow-auto"
-                        style={{
-                          maxHeight: "43vh",
-                          width: "auto",
-                        }}
-                      >
-                        <Tasks />
-                      </div>
+                    </Card.Header>
+                    <Card.Body className="overflow-auto">
+                      <Tasks />
                     </Card.Body>
-                    <div className="mb-4 mx-4">
+                    <Card.Footer className="pb-4">
                       <TaskButton />
                       <Roadblocks />
-                    </div>
+                    </Card.Footer>
                   </Card>
                 </Col>
                 <Col>
@@ -122,23 +114,17 @@ export default function Dashboard() {
                       width: "auto",
                     }}
                   >
-                    <Card.Body>
-                      <h2 className="text-center mb-4">
+                    <Card.Header>
+                      <h2 className="text-center m-0">
                         Your <strong>Appraisals</strong>
                       </h2>
-                      <div
-                        className="overflow-auto"
-                        style={{
-                          maxHeight: "43vh",
-                          width: "auto",
-                        }}
-                      >
-                        <Appraisals />
-                      </div>
+                    </Card.Header>
+                    <Card.Body className="overflow-auto">
+                      <Appraisals />
                     </Card.Body>
-                    <div className="mb-4 mx-4">
+                    <Card.Footer className="pb-4">
                       <TeamTasks />
-                    </div>
+                    </Card.Footer>
                   </Card>
                 </Col>
               </Row>
