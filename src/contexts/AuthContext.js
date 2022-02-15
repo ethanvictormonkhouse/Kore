@@ -1,4 +1,7 @@
+/*----------IMPORT REACT----------*/
 import React, { useContext, createContext, useState, useEffect } from "react";
+
+//*----------IMPORT FIREBASE TOOLS----------*/
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,7 +11,6 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
-import { auth } from "../services/firebase";
 import {
   setDoc,
   getDoc,
@@ -22,10 +24,15 @@ import {
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
+
+/*----------IMPORT FIREBASE APP----------*/
+import { auth } from "../services/firebase";
 import { db, rtdb, storage } from "../services/firebase";
 
 /*----------INITIALIZE CONTEXT----------*/
 const AuthContext = createContext();
+
+/*----------EXPORT CONTEXT----------*/
 export function useAuth() {
   return useContext(AuthContext);
 }
@@ -39,7 +46,6 @@ export function AuthProvider({ children }) {
     status: "...",
     updated: "...",
   });
-
   const [baseData, setBaseData] = useState({
     code: "...",
     country: "...",
@@ -62,7 +68,7 @@ export function AuthProvider({ children }) {
   });
 
   /*----------FIREBASE AUTH FUNCTIONS----------*/
-  //function allowing the user to signup
+  /*----------SIGNUP FUNCTION----------*/
   function signup(email, password, fname, lname, team, base, avatar) {
     return createUserWithEmailAndPassword(auth, email, password)
       .then(async (res) => {
@@ -73,7 +79,7 @@ export function AuthProvider({ children }) {
         const photoURL = await getDownloadURL(
           sRef(storage, res.user.uid + ".png")
         );
-        const userData = {
+        await setDoc(doc(db, "users", res.user.uid), {
           fname: fname,
           lname: lname,
           email: email,
@@ -81,71 +87,74 @@ export function AuthProvider({ children }) {
           base: base,
           avatar: photoURL,
           vfp: { realized: 0, unrealized: 0, multiplier: 3 },
-        };
-        await setDoc(doc(db, "users", res.user.uid), userData);
-        setCurrentUserData(userData);
-
+        });
         return res;
       });
   }
 
-  //function allowing the user to login
+  /*----------LOGIN FUNCTION----------*/
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password).then((res) => {
       return res;
     });
   }
 
-  //function allowing the user to logout
+  /*----------LOGOUT FUNCTION----------*/
   function logout() {
-    remove(ref(rtdb, "users/" + currentUser.uid)); //if logout, remove userStatus from Firebase
+    remove(ref(rtdb, "users/" + currentUser.uid));
     return signOut(auth);
   }
-  //function allowing the user to change their email
+
+  /*----------CHANGE EMAIL FUNCTION----------*/
   function changeEmail(email) {
     return updateEmail(auth.currentUser, email);
   }
-  //function allowing the user to change their password
+
+  /*----------CHANGE PASSWORD FUNCTION----------*/
   function changePassword(password) {
     return updatePassword(auth.currentUser, password);
   }
-  //function allowing the user to reset their password
+
+  /*----------RESET PASSWORD FUNCTION----------*/
   function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
 
   /*----------FIRESTORE FUNCTIONS----------*/
-
+  /*----------FIND TEAM MEMBER FUNCTION----------*/
   function findUser(user) {
     try {
       if (currentUser && teamMembers[1]) {
-        const userW = teamMembers.find((element) => element.id === user);
-        return userW.data();
+        return teamMembers.find((element) => element.id === user).data();
       } else return "Unknown";
     } catch (err) {
       console.log(err.message);
     }
   }
-
+  /*----------FIND USER STATUS FUNCTION----------*/
   function findUserStatus(user) {
     if (userPresence && userPresence[user]) return userPresence[user].status;
     else return "Offline";
   }
 
+  /*----------FIND USER FUNCTION----------*/
   async function getUserData(user) {
     return await getDoc(doc(db, "users", user));
   }
 
+  /*----------CREATE TASK FUNCTION----------*/
   async function createTask(title, desc, status, assigned_to) {
     return await addDoc(collection(db, "tasks"), {
       title: title,
       desc: desc,
       status: status,
       assigned_to: assigned_to,
+      team: currentUserData.team,
       created_by: auth.currentUser.uid,
     });
   }
 
+  /*----------CREATE ROADBLOCK FUNCTION----------*/
   async function createRoadblock(task_id, task_title, issue, status) {
     return await addDoc(collection(db, "roadblocks"), {
       task_id: task_id,
@@ -160,6 +169,7 @@ export function AuthProvider({ children }) {
     });
   }
 
+  /*----------CREATE APPRAISAL FUNCTION----------*/
   async function createAppraisal(task_id, task_title, type, comment, given_to) {
     return await addDoc(collection(db, "appraisal"), {
       task_id: task_id,
@@ -172,11 +182,12 @@ export function AuthProvider({ children }) {
       return await getUserData(given_to).then(async (res) => {
         if (type === "positive") {
           return await updateDoc(doc(db, "users", given_to), {
-            "vfp.unrealized": res.data().vfp.unrealized + 3,
+            "vfp.unrealized":
+              res.data().vfp.unrealized + 3 * res.data().vfp.multiplier,
           });
         } else {
           return await updateDoc(doc(db, "users", given_to), {
-            "vfp.multiplier": res.data().vfp.multiplier - 1,
+            "vfp.multiplier": res.data().vfp.multiplier - 0.25,
           });
         }
       });
@@ -185,7 +196,7 @@ export function AuthProvider({ children }) {
 
   /*----------REALTIME DATABASE FUNCTIONS----------*/
 
-  //function to update the user's status on Firebase
+  /*----------UPDATE STATUS FUNCTION----------*/
   function updateStatus(user, newStatus, newDesc) {
     const date = Date.now();
     const status = {
@@ -197,6 +208,7 @@ export function AuthProvider({ children }) {
     setCurrentUserStatus(status);
   }
 
+  /*----------USER STATUS LISTENER----------*/
   function userPresenceListener() {
     const usersRef = ref(rtdb, "users/");
     onValue(usersRef, (snapshot) => {
@@ -211,7 +223,6 @@ export function AuthProvider({ children }) {
       setLoading(true);
       setCurrentUser(user); //set currentUser if authentication state changes
       if (user) {
-        console.log("user");
         onDisconnect(ref(rtdb, "users/" + user.uid)).remove(); //send function to Firebase incase the user disconnects
         userPresenceListener();
 
@@ -244,10 +255,11 @@ export function AuthProvider({ children }) {
               return currentUser;
             });
         });
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
-  }, []); //only run once
+  }, []); //ONLY CALL ONCE
 
   /*----------CONTEXT OBJECT----------*/
   const value = {
@@ -273,7 +285,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    //if not loading, export
+    /*----------RENDER WRAPPED CHILDREN----------*/
     <AuthContext.Provider value={value}>
       {!loading && children}
     </AuthContext.Provider>

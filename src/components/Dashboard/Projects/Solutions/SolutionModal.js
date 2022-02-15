@@ -1,9 +1,11 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
+import { useAuth } from "../../../../contexts/AuthContext";
 
-import RoadblockForm from "./RoadblockForm";
+import SolutionForm from "./SolutionForm";
 
-export default function RoadblockModal(props) {
+export default function SolutionModal(props) {
+  const { currentUserData, findUser } = useAuth();
   return (
     <Modal
       {...props}
@@ -13,15 +15,16 @@ export default function RoadblockModal(props) {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          Heuston, we have a problem!
+          Had a lightbulb moment, {currentUserData.fname}?
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        So it seems you've run into an issue. That's not a bother! Fill in some
-        details and let's see if your team can help you out.
+        Nice one! We bet {findUser(props.created).fname} would love to know your
+        potential solution. Let them know below by completing the solution
+        submission below.
       </Modal.Body>
       <div className="mx-3 mb-3">
-        <RoadblockForm {...props} />
+        <SolutionForm {...props} />
       </div>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

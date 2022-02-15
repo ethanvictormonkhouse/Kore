@@ -18,7 +18,7 @@ export default function TaskModal(props) {
         Let's get working! Fill in the detail below, and assign it to a team
         member.
       </Modal.Body>
-      <div className="m-3">
+      <div className="mx-3 mb-3">
         <TaskForm {...props} />
       </div>
       <Modal.Footer>

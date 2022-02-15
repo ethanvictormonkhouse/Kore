@@ -3,6 +3,8 @@ import { Card, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import RoadblockOptions from "./RoadblockOptions";
+
 export default function RoadblockCard(props) {
   const { findUser } = useAuth();
 
@@ -28,6 +30,9 @@ export default function RoadblockCard(props) {
                 {findUser(props.created).fname} is having an issue with their
                 task to '<i>{props.title}</i>'
               </p>
+            </Col>
+            <Col md="auto">
+              <RoadblockOptions {...props} />
             </Col>
           </Row>
         </Card.Body>

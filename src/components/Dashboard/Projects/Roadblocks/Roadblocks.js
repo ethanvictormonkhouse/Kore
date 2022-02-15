@@ -36,8 +36,9 @@ export default function Roadblocks() {
     <div>
       {roadblocks.map((roadblock) => (
         <RoadblockCard
-          id={roadblock.task_id}
-          key={roadblock.task_id}
+          id={roadblock.id}
+          key={roadblock.id}
+          task={roadblock.task_id}
           title={roadblock.task_title}
           issue={roadblock.issue}
           status={roadblock.status}

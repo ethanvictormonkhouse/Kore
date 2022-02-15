@@ -8,13 +8,13 @@ import AppraisalsCard from "./AppraisalsCard";
 export default function Appraisals() {
   const [loading, setLoading] = useState(false);
   const [appraisals, setAppraisals] = useState([]);
-  const { currentUser } = useAuth();
+  const { currentUser, currentUserData } = useAuth();
 
   useEffect(() => {
     setLoading(true);
-
     const q = query(
       collection(db, "tasks"),
+      where("team", "==", currentUserData.team),
       where("status", "==", "Complete"),
       where("assigned_to", "!=", currentUser.uid)
     );
