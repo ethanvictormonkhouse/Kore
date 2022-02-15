@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, Row, Col, Badge } from "react-bootstrap";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import AppraisalsButton from "./AppraisalsButton";
+import TeamTaskButton from "./TeamTaskButton";
 
-export default function AppraisalsCard(props) {
+export default function TeamTaskCard(props) {
   const { findUser } = useAuth();
 
   return (
@@ -28,7 +28,7 @@ export default function AppraisalsCard(props) {
               </Badge>{" "}
             </Col>
             <Col md="auto">
-              <AppraisalsButton {...props} />
+              <TeamTaskButton {...props} />
             </Col>
           </Row>
         </Card.Body>

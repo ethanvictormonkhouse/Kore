@@ -2,33 +2,32 @@ import React, { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../../../services/firebase";
 import { useAuth } from "../../../../contexts/AuthContext";
-
-import AppraisalsCard from "./AppraisalsCard";
+import AppraisalCard from "./AppraisalCard";
 
 export default function Appraisals() {
   const [loading, setLoading] = useState(false);
-  const [appraisals, setAppraisals] = useState([]);
-  const { currentUser, currentUserData } = useAuth();
+  const [tasks, setTasks] = useState([]);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     setLoading(true);
+
     const q = query(
-      collection(db, "tasks"),
-      where("team", "==", currentUserData.team),
-      where("status", "==", "Complete"),
-      where("assigned_to", "!=", currentUser.uid)
+      //use composite index in firebase to search
+      collection(db, "appraisals"),
+      where("given_to", "==", currentUser.uid)
     );
 
     onSnapshot(q, (querySnapshot) => {
       if (!querySnapshot) return;
-      const appraisals = [];
+      const tasks = [];
       querySnapshot.forEach((doc) =>
-        appraisals.push({
+        tasks.push({
           ...doc.data(),
           id: doc.id,
         })
       );
-      setAppraisals(appraisals);
+      setTasks(tasks);
     });
 
     return () => {
@@ -38,15 +37,14 @@ export default function Appraisals() {
 
   return (
     <div>
-      {appraisals.map((appraisal) => (
-        <AppraisalsCard
-          id={appraisal.id}
-          key={appraisal.id}
-          title={appraisal.title}
-          task={appraisal.task}
-          issue={appraisal.issue}
-          status={appraisal.status}
-          assigned={appraisal.assigned_to}
+      {tasks.map((task) => (
+        <AppraisalCard
+          id={task.id}
+          key={task.id}
+          type={task.type}
+          task={task.task_title}
+          comment={task.comment}
+          created={task.created_by}
         />
       ))}
     </div>

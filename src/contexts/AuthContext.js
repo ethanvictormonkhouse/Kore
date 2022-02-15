@@ -189,7 +189,7 @@ export function AuthProvider({ children }) {
 
   /*----------CREATE APPRAISAL FUNCTION----------*/
   async function createAppraisal(task_id, task_title, type, comment, given_to) {
-    return await addDoc(collection(db, "appraisal"), {
+    return await addDoc(collection(db, "appraisals"), {
       task_id: task_id,
       task_title: task_title,
       type: type,

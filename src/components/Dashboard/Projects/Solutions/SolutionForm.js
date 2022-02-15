@@ -13,7 +13,7 @@ import { useAuth } from "../../../../contexts/AuthContext";
 
 export default function SolutionForm(props) {
   const solutionRef = useRef();
-  console.log(props);
+
   const { createSolution } = useAuth();
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");

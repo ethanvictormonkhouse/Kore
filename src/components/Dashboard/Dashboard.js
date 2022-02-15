@@ -8,11 +8,12 @@ import Greeting from "./Header/Greeting";
 import Toasts from "./Toasts/Toasts";
 import ActivityDetection from "./Status/ActivityDetection";
 import StatusToggler from "./Status/StatusToggler";
-import Tasks from "./Projects/Tasks/Tasks";
-import TaskButton from "./Projects/Tasks/TaskButton";
+import Tasks from "./Projects/Tasks/IndividualTasks/Tasks";
+import TaskButton from "./Projects/Tasks/IndividualTasks/TaskButton";
 import Roadblocks from "../Dashboard/Projects/Roadblocks/Roadblocks";
-import Appraisals from "./Projects/Appraisals/Appraisals";
+import TeamTasks from "./Projects/Tasks/TeamTasks/TeamTasks";
 import VFPDetails from "../Profile/VFPDetails";
+import Appraisals from "./Projects/Appraisals/Appraisals";
 
 export default function Dashboard() {
   const {
@@ -91,7 +92,7 @@ export default function Dashboard() {
                         </h2>
 
                         <div className="overflow-hidden">
-                          <Appraisals />
+                          <TeamTasks />
                         </div>
                       </Card.Body>
                     </Card>
@@ -104,6 +105,18 @@ export default function Dashboard() {
                         </h2>
                         <div className="overflow-hidden">
                           <Roadblocks />
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col>
+                    <Card className="shadow m-2">
+                      <Card.Body>
+                        <h2 className="text-center mb-4">
+                          Your <strong>Appraisals</strong>
+                        </h2>
+                        <div className="overflow-hidden">
+                          <Appraisals />
                         </div>
                       </Card.Body>
                     </Card>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { deleteDoc, updateDoc, doc } from "firebase/firestore";
-import { db } from "../../../../services/firebase";
+import { auth, db } from "../../../../services/firebase";
 import { Button } from "react-bootstrap";
 
 import SolutionModal from "../Solutions/SolutionModal";
@@ -27,12 +27,16 @@ export default function RoadblockOptions(props) {
 
   return (
     <div className="d-grid gap-3">
-      <Button onClick={() => setModalShow(true)} variant="success" size="sm">
-        <FontAwesomeIcon icon="fa-solid fa-lightbulb" /> Offer Solution
-      </Button>
-      <Button onClick={handleRemove} variant="outline-danger" size="sm">
-        <FontAwesomeIcon icon="fa-solid fa-times" /> Cancel{" "}
-      </Button>
+      {props.created === auth.currentUser.uid ? (
+        <Button onClick={handleRemove} variant="outline-danger" size="sm">
+          <FontAwesomeIcon icon="fa-solid fa-times" /> Close{" "}
+        </Button>
+      ) : (
+        <Button onClick={() => setModalShow(true)} variant="success" size="sm">
+          <FontAwesomeIcon icon="fa-solid fa-lightbulb" /> Offer Solution
+        </Button>
+      )}
+
       <SolutionModal
         {...props}
         show={modalShow}

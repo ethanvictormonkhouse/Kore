@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { updateDoc, deleteDoc, doc } from "firebase/firestore";
-import { db } from "../../../../services/firebase";
+import { db } from "../../../../../services/firebase";
 import { Button } from "react-bootstrap";
 
-import RoadblockModal from "../Roadblocks/RoadblockModal";
+import RoadblockModal from "../../Roadblocks/RoadblockModal";
 
 export default function TaskOptions(props) {
   const [modalShow, setModalShow] = useState(false);

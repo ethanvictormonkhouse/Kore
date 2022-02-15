@@ -10,7 +10,7 @@ export default function RoadblockCard(props) {
 
   return (
     <div>
-      <Card text="dark" className="shadow-sm mb-2">
+      <Card border="danger" text="dark" className="shadow-sm mb-2">
         <Card.Body>
           <Row>
             <Col>

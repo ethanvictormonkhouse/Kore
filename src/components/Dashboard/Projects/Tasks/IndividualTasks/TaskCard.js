@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Row, Col, Badge } from "react-bootstrap";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TaskOptions from "./TaskOptions";
 

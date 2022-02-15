@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { useAuth } from "../../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import AppraisalsForm from "./AppraisalsForm";
+import TeamTaskForm from "./TeamTaskForm";
 
-export default function AppraisalsModal(props) {
+export default function TeamTaskModal(props) {
   const { findUser } = useAuth();
 
   return (
@@ -23,7 +23,7 @@ export default function AppraisalsModal(props) {
           </Modal.Title>
         </Modal.Header>
         <div className="m-3">
-          <AppraisalsForm {...props} />
+          <TeamTaskForm {...props} />
         </div>
         <Modal.Footer>
           <Button onClick={props.onHide}>Close</Button>

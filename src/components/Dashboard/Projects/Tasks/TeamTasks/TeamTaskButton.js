@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import AppraisalsModal from "./AppraisalsModal";
+import TeamTaskModal from "./TeamTaskModal";
 
-export default function AppraisalsButton(props) {
+export default function TeamTaskButton(props) {
   const [modalShow, setModalShow] = useState(false);
   return (
     <div>
@@ -12,7 +12,7 @@ export default function AppraisalsButton(props) {
         <FontAwesomeIcon icon="fa-solid fa-comment" />
       </Button>
 
-      <AppraisalsModal
+      <TeamTaskModal
         {...props}
         show={modalShow}
         onHide={() => setModalShow(false)}

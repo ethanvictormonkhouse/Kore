@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
-import { db } from "../../../../services/firebase";
-import { useAuth } from "../../../../contexts/AuthContext";
+import { db } from "../../../../../services/firebase";
+import { useAuth } from "../../../../../contexts/AuthContext";
 import TaskCard from "./TaskCard";
 
 export default function Tasks() {
