@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import TeamTaskModal from "./TeamTaskModal";
 
@@ -9,7 +8,7 @@ export default function TeamTaskButton(props) {
   return (
     <div>
       <Button onClick={() => setModalShow(true)} variant="secondary">
-        <FontAwesomeIcon icon="fa-solid fa-comment" />
+        Select
       </Button>
 
       <TeamTaskModal

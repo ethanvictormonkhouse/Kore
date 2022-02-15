@@ -21,9 +21,6 @@ export default function TaskModal(props) {
       <div className="mx-3 mb-3">
         <TaskForm {...props} />
       </div>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 }

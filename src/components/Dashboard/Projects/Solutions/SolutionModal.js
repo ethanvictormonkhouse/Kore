@@ -26,9 +26,6 @@ export default function SolutionModal(props) {
       <div className="mx-3 mb-3">
         <SolutionForm {...props} />
       </div>
-      <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-      </Modal.Footer>
     </Modal>
   );
 }

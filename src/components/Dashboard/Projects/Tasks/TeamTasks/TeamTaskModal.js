@@ -25,9 +25,6 @@ export default function TeamTaskModal(props) {
         <div className="m-3">
           <TeamTaskForm {...props} />
         </div>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Close</Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );

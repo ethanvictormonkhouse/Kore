@@ -9,7 +9,7 @@ export default function TaskButton(props) {
   return (
     <div>
       <div className="d-grid mt-3">
-        <Button onClick={() => setModalShow(true)} variant="primary" size="lg">
+        <Button onClick={() => setModalShow(true)} variant="primary" size="md">
           <FontAwesomeIcon icon="fa-solid fa-add" /> New Task
         </Button>
       </div>

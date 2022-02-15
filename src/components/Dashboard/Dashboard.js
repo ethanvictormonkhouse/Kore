@@ -32,104 +32,128 @@ export default function Dashboard() {
         <ActivityDetection />
         <Header />
         <Container fluid className="m-0 p-0">
-          <Row>
-            <Col xs={12} md={9}>
-              <Card className="shadow m-2">
-                <Card.Body>
-                  <Row>
-                    <Col md="auto">
-                      <div className="d-flex justify-content-center mb-2">
-                        <Image
-                          src={currentUserData.avatar}
-                          style={{ height: "8rem", width: "auto" }}
-                          roundedCircle
-                          thumbnail
-                        />
-                      </div>
-                    </Col>
-                    <Col className="text-left d-flex align-items-center justify-content-left">
-                      <div>
-                        <h2>
-                          <Greeting />
-                        </h2>
-                        <p>
-                          {teamData.name}
-                          <br />
-                          {baseData.name} [+{baseData.code}]
-                          <br />
-                          <VFPDetails />
-                        </p>
-                      </div>
-                    </Col>
-                    <Col className="text-left d-flex align-items-center justify-content-end">
-                      <StatusToggler />
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-              <Container fluid className="m-0 p-0">
-                <Row xs={2} md={2} lg={2}>
-                  <Col>
-                    <Card text="dark" className="shadow m-2">
-                      <Card.Body>
-                        <div>
-                          <h2 className="text-center mb-4">
-                            Your Active <strong>Tasks</strong>
-                          </h2>
-                        </div>
-                        <div className="overflow-hidden">
-                          <Tasks />
-                        </div>
-                        <TaskButton />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col>
-                    <Card className="shadow m-2">
-                      <Card.Body>
-                        <h2 className="text-center mb-4">
-                          Recently <strong>Completed (All)</strong>
-                        </h2>
+          <Row
+            style={{
+              margin: "1vh",
+            }}
+          >
+            <Col xs={9} md={9}>
+              <Row>
+                <Col>
+                  <Card
+                    className="shadow"
+                    style={{
+                      margin: "0 0 2vh 0",
+                      height: "20vh",
+                      width: "auto",
+                    }}
+                  >
+                    <Card.Body>
+                      <Row>
+                        <Col md="auto">
+                          <div className="d-flex justify-content-center mb-2">
+                            <Image
+                              src={currentUserData.avatar}
+                              style={{ height: "8rem", width: "auto" }}
+                              roundedCircle
+                              thumbnail
+                            />
+                          </div>
+                        </Col>
+                        <Col className="text-left d-flex align-items-center justify-content-left">
+                          <div>
+                            <h2>
+                              <Greeting />
+                            </h2>
+                            <p>
+                              {teamData.name}
+                              <br />
+                              {baseData.name} [+{baseData.code}]
+                              <br />
+                              <VFPDetails />
+                            </p>
+                          </div>
+                        </Col>
+                        <Col className="text-left d-flex align-items-center justify-content-end">
+                          <StatusToggler />
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Card
+                    className="shadow"
+                    style={{
+                      margin: "0 0 2vh 0",
+                      height: "62vh",
+                      width: "auto",
+                    }}
+                  >
+                    <Card.Body>
+                      <h2 className="text-center mb-4">
+                        Your Active <strong>Tasks</strong>
+                      </h2>
 
-                        <div className="overflow-hidden">
-                          <TeamTasks />
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col>
-                    <Card className="shadow m-2">
-                      <Card.Body>
-                        <h2 className="text-center mb-4">
-                          Open <strong>Roadblocks</strong>
-                        </h2>
-                        <div className="overflow-hidden">
-                          <Roadblocks />
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                  <Col>
-                    <Card className="shadow m-2">
-                      <Card.Body>
-                        <h2 className="text-center mb-4">
-                          Your <strong>Appraisals</strong>
-                        </h2>
-                        <div className="overflow-hidden">
-                          <Appraisals />
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </Row>
-              </Container>
+                      <div
+                        className="overflow-auto"
+                        style={{
+                          maxHeight: "43vh",
+                          width: "auto",
+                        }}
+                      >
+                        <Tasks />
+                      </div>
+                    </Card.Body>
+                    <div className="mb-4 mx-4">
+                      <TaskButton />
+                      <Roadblocks />
+                    </div>
+                  </Card>
+                </Col>
+                <Col>
+                  <Card
+                    className="shadow"
+                    style={{
+                      margin: "0 0 2vh 0",
+                      height: "62vh",
+                      width: "auto",
+                    }}
+                  >
+                    <Card.Body>
+                      <h2 className="text-center mb-4">
+                        Your <strong>Appraisals</strong>
+                      </h2>
+                      <div
+                        className="overflow-auto"
+                        style={{
+                          maxHeight: "43vh",
+                          width: "auto",
+                        }}
+                      >
+                        <Appraisals />
+                      </div>
+                    </Card.Body>
+                    <div className="mb-4 mx-4">
+                      <TeamTasks />
+                    </div>
+                  </Card>
+                </Col>
+              </Row>
             </Col>
-            <Col xs={6} md={3}>
-              <Status
-                auth={
-                  (currentUser, currentUserStatus, updateStatus, teamMembers)
-                }
-              />
+            <Col xs={3} md={3}>
+              <Card
+                className="shadow"
+                style={{ margin: "0 0 2vh 0", height: "84vh", width: "auto" }}
+              >
+                <Status
+                  auth={
+                    (currentUser, currentUserStatus, updateStatus, teamMembers)
+                  }
+                />
+              </Card>
             </Col>
           </Row>
         </Container>
