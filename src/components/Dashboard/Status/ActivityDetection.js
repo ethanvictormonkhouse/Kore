@@ -6,14 +6,14 @@ export default function ActivityDetection() {
   const [lastStatus, setLastStatus] = useState("Available");
   const timeOutMins = 1;
   const { currentUser, currentUserStatus, updateStatus } = useAuth();
+  if (Notification.permission !== "granted") Notification.requestPermission();
 
   function showNotification() {
     if (!("Notification" in window)) {
       console.log("This browser does not support desktop notification");
     } else if (Notification.permission === "granted") {
-      new Notification("You still there?", {
-        body: "You've been inactive for a while. We've changed your status to away.",
-        icon: "public/logo512d.png",
+      new Notification("You still there? Status set to 'Away'", {
+        body: "You've been inactive for a while. We've changed your status to 'Away'",
       });
     } else {
       Notification.requestPermission();
