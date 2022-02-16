@@ -12,7 +12,6 @@ export default function RoadblockCard(props) {
   return (
     <div>
       <Card border="danger" text="dark" className="shadow-sm mb-2">
-        {console.log(props)}
         <Card.Body>
           <Row>
             <Col>

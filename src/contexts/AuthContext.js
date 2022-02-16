@@ -186,7 +186,6 @@ export function AuthProvider({ children }) {
         solution_by: auth.currentUser.uid,
       })
     );
-    promises.push(updateVFP(auth.currentUser.uid, 1));
   }
 
   /*----------CREATE APPRAISAL FUNCTION----------*/
@@ -327,6 +326,7 @@ export function AuthProvider({ children }) {
     findUser,
     findUserStatus,
     createSolution,
+    updateVFP,
   };
 
   return (

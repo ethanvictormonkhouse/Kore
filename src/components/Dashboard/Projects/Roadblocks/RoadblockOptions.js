@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { deleteDoc, updateDoc, doc } from "firebase/firestore";
-import { auth, db } from "../../../../services/firebase";
+import { useAuth } from "../../../../contexts/AuthContext";
+import { db } from "../../../../services/firebase";
 import { Button } from "react-bootstrap";
 
 import SolutionModal from "../Solutions/SolutionModal";
@@ -9,6 +10,7 @@ import SolutionModal from "../Solutions/SolutionModal";
 export default function RoadblockOptions(props) {
   const [modalShow, setModalShow] = useState(false);
   const [pending, setPending] = useState(false);
+  const { currentUser, updateVFP } = useAuth();
 
   const handleRemove = async () => {
     const promises = [];
@@ -28,14 +30,16 @@ export default function RoadblockOptions(props) {
 
   const handleAccept = async () => {
     const promises = [];
-    promises.push(
-      updateDoc(doc(db, "tasks", props.task), { status: "Active" })
-    );
+    promises.push(updateVFP(props.solution_by, 2));
     promises.push(
       updateDoc(doc(db, "roadblocks", props.id), {
         status: "Closed",
       })
     );
+    promises.push(
+      updateDoc(doc(db, "tasks", props.task), { status: "Active" })
+    );
+
     Promise.all(promises)
       .then((res) => {
         return res[0];
@@ -75,7 +79,7 @@ export default function RoadblockOptions(props) {
 
   return (
     <div className="d-grid gap-3">
-      {props.created === auth.currentUser.uid ? (
+      {props.created === currentUser.uid ? (
         pending ? (
           <div className="d-grid gap-3">
             <Button onClick={handleAccept} variant="success" size="sm">
