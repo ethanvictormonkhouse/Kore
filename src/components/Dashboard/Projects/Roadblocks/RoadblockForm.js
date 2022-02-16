@@ -48,12 +48,7 @@ export default function RoadblockForm(props) {
           <Card.Body>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Control
-                  controlId="task"
-                  type="text"
-                  placeholder={props.title}
-                  readOnly
-                />
+                <Form.Control type="text" placeholder={props.title} readOnly />
               </Form.Group>
               <Form.Group id="issue">
                 <FloatingLabel

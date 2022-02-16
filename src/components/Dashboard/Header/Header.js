@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <div>
       <>
-        <Navbar bg="light" className="shadow mb-30vh">
+        <Navbar bg="light" className="shadow">
           <Container>
             <Navbar.Brand href="#home">
               <img

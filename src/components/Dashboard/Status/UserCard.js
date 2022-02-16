@@ -25,10 +25,10 @@ export default function UserCard(props) {
         <Card text="dark" className="shadow-sm mb-2">
           <Row xs={1} md={1} lg={2}>
             <Col md="auto">
-              <div className="text-center">
+              <div className="text-center my-2">
                 <Image
                   src={props.avatar}
-                  style={{ height: "auto", width: "60%" }}
+                  style={{ height: "10vh", width: "auto" }}
                   roundedCircle
                   className={
                     "border-" + getStatusStyling(findUserStatus(props.id))

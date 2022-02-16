@@ -41,8 +41,8 @@ export default function ProfileInformation() {
                     <br />
                     {baseData.name} [+{baseData.code}]
                     <br />
-                    <VFPDetails />
                   </p>
+                  <VFPDetails />
                 </div>
               </Col>
               <Col className="text-left d-flex align-items-center justify-content-end">
