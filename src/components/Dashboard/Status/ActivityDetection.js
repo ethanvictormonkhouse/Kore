@@ -7,7 +7,21 @@ export default function ActivityDetection() {
   const timeOutMins = 1;
   const { currentUser, currentUserStatus, updateStatus } = useAuth();
 
+  function showNotification() {
+    if (!("Notification" in window)) {
+      console.log("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+      new Notification("You still there?", {
+        body: "You've been inactive for a while. We've changed your status to away.",
+        icon: "public/logo512d.png",
+      });
+    } else {
+      Notification.requestPermission();
+    }
+  }
+
   const handleOnIdle = (event) => {
+    showNotification();
     setLastStatus(currentUserStatus.status); //store current status
     updateStatus(currentUser.uid, "Away", ""); //update status to away
   };
@@ -19,7 +33,7 @@ export default function ActivityDetection() {
   };
 
   useIdleTimer({
-    timeout: timeOutMins * 1000 * 60,
+    timeout: timeOutMins * 60 * 1000,
     onIdle: handleOnIdle,
     onActive: handleOnActive,
     debounce: 500,
