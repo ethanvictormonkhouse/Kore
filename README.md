@@ -1,6 +1,6 @@
 # Getting Started with Kore
 
-Kore was developed as part of a Final Year Project. The purpose of the platform is to improve the focus of virtual self-managing teams by improving online identity and creating a self-governing environment.
+Kore was developed as part of a Final Year Project. The purpose of the platform is to improve the focus of virtual self-managing teams by improving online identity and create a self-governing environment.
 
 ## Available Scripts
 

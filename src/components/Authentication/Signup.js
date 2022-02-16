@@ -200,7 +200,7 @@ export default function Signup() {
                   <Form.Label>Upload Avatar</Form.Label>
                   <Form.Control ref={avatarRef} type="file" />
                 </Form.Group>
-                <Button disabled={loading} className="w-100 mt-4" type="submit">
+                <Button disabled className="w-100 mt-4" type="submit">
                   Sign Up &nbsp;
                   <Spinner
                     as="span"
