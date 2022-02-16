@@ -14,7 +14,7 @@ export default function Roadblocks(props) {
 
     const q = query(
       collection(db, "roadblocks"),
-      where("status", "==", "Open")
+      where("status", "!=", "Closed")
     );
 
     onSnapshot(q, (querySnapshot) => {
@@ -67,6 +67,8 @@ export default function Roadblocks(props) {
               title={roadblock.task_title}
               issue={roadblock.issue}
               status={roadblock.status}
+              solution={roadblock.solution}
+              solution_by={roadblock.solution_by}
               created={roadblock.created_by}
             />
           ))}

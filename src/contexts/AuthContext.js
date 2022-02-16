@@ -161,6 +161,8 @@ export function AuthProvider({ children }) {
       task_title: task_title,
       issue: issue,
       status: status,
+      solution: "No Current Solution",
+      solution_by: "",
       created_by: auth.currentUser.uid,
     }).then(async () => {
       return await updateDoc(doc(db, "tasks", task_id), {
@@ -171,20 +173,20 @@ export function AuthProvider({ children }) {
 
   /*----------CREATE SOLUTION FUNCTION----------*/
   async function createSolution(roadblock_id, task_id, solution) {
-    return await addDoc(collection(db, "solutions"), {
-      task_id: task_id,
-      roadblock_id: roadblock_id,
-      solution: solution,
-      created_by: auth.currentUser.uid,
-    }).then(async () => {
-      const promises = [];
-      promises.push(
-        updateDoc(doc(db, "tasks", task_id), {
-          status: "Awaiting Solution Response",
-        })
-      );
-      promises.push(updateVFP(auth.currentUser.uid, 1));
-    });
+    const promises = [];
+    promises.push(
+      updateDoc(doc(db, "tasks", task_id), {
+        status: "Awaiting Solution Response",
+      })
+    );
+    promises.push(
+      updateDoc(doc(db, "roadblocks", roadblock_id), {
+        status: "Awaiting Response",
+        solution: solution,
+        solution_by: auth.currentUser.uid,
+      })
+    );
+    promises.push(updateVFP(auth.currentUser.uid, 1));
   }
 
   /*----------CREATE APPRAISAL FUNCTION----------*/

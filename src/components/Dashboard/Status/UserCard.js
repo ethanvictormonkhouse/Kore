@@ -24,7 +24,7 @@ export default function UserCard(props) {
       <Container>
         <Card text="dark" className="shadow-sm mb-2">
           <Row xs={1} md={1} lg={2}>
-            <Col md="auto">
+            <Col>
               <div className="text-center my-2">
                 <Image
                   src={props.avatar}
@@ -37,7 +37,7 @@ export default function UserCard(props) {
                 />
               </div>
             </Col>
-            <Col className="text-left d-flex align-items-center justify-content-left">
+            <Col md="auto" className="text-left d-flex align-items-center">
               <div>
                 <h5>
                   {props.fname} {props.lname}
