@@ -224,6 +224,10 @@ export function AuthProvider({ children }) {
       return await updateDoc(doc(db, "users", user), {
         "vfp.unrealized":
           res.data().vfp.unrealized + vfp * res.data().vfp.multiplier,
+        "vfp.multiplier":
+          res.data().vfp.multiplier + 0.25 > 3
+            ? 3
+            : res.data().vfp.multiplier + 0.25,
       });
     });
   }
@@ -232,7 +236,10 @@ export function AuthProvider({ children }) {
   async function updateMultiplier(user, multiplier) {
     return await getUserData(user).then(async (res) => {
       return await updateDoc(doc(db, "users", user), {
-        "vfp.multiplier": res.data().vfp.multiplier - multiplier,
+        "vfp.multiplier":
+          res.data().vfp.multiplier - multiplier < 1
+            ? 1
+            : res.data().vfp.multiplier - multiplier,
       });
     });
   }
