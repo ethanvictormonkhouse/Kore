@@ -27,25 +27,21 @@ export default function StatusToggler() {
   ];
   return (
     <div>
-      <Container className="d-flex justify-content-center">
-        <ButtonGroup className="shadow">
-          {statuses.map((status) => (
-            <ToggleButton
-              key={status.name}
-              id={`status-${status.name}`}
-              type="radio"
-              variant={status.variant}
-              value={status.name}
-              checked={currentUserStatus.status === status.name}
-              onChange={(e) =>
-                updateStatus(currentUser.uid, e.target.value, "")
-              }
-            >
-              <FontAwesomeIcon className="m-1" icon={status.icon} size="2x" />
-            </ToggleButton>
-          ))}
-        </ButtonGroup>
-      </Container>
+      <ButtonGroup className="shadow">
+        {statuses.map((status) => (
+          <ToggleButton
+            key={status.name}
+            id={`status-${status.name}`}
+            type="radio"
+            variant={status.variant}
+            value={status.name}
+            checked={currentUserStatus.status === status.name}
+            onChange={(e) => updateStatus(currentUser.uid, e.target.value, "")}
+          >
+            <FontAwesomeIcon className="m-1" icon={status.icon} size="2x" />
+          </ToggleButton>
+        ))}
+      </ButtonGroup>
     </div>
   );
 }

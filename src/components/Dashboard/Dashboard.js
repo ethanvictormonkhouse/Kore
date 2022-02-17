@@ -23,13 +23,13 @@ export default function Dashboard() {
       <div>
         <ActivityDetection />
         <Header />
-        <Container fluid className="m-0 p-0 ">
+        <Container fluid className="m-0 p-0">
           <Row
             style={{
               margin: "1vh",
             }}
           >
-            <Col xs={9} md={9}>
+            <Col sm={12} md={12} lg={9}>
               <Row>
                 <ProfileInformation />
               </Row>
@@ -78,9 +78,9 @@ export default function Dashboard() {
                 </Col>
               </Row>
             </Col>
-            <Col xs={3} md={3}>
+            <Col sm={12} md={12} lg={3}>
               <Card
-                className="shadow"
+                className="shadow mt-4"
                 style={{ height: "84vh", width: "auto" }}
               >
                 <Card.Header>
@@ -99,6 +99,9 @@ export default function Dashboard() {
                     }
                   />
                 </Card.Body>
+                <Card.Footer className="text-center">
+                  Copyright © 2022 Ethan Monkhouse
+                </Card.Footer>
               </Card>
             </Col>
           </Row>
