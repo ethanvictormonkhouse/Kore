@@ -29,13 +29,16 @@ export default function RoadblockForm(props) {
         issueRef.current.value,
         "Open"
       ).then((res) => {
-        setResponse("Successfully submitted roadblock.");
+        setResponse({
+          desc: "Successfully submitted roadblock!",
+          variant: "success",
+        });
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
-      setResponse("There was an issue submitting your roadblock.");
+      setResponse({ desc: "Oh no! There's been an error", variant: "danger" });
       setLoading(false);
       return err.message;
     }
@@ -64,7 +67,9 @@ export default function RoadblockForm(props) {
                   />
                 </FloatingLabel>
               </Form.Group>
-              {response && <Alert variant="success">{response}</Alert>}
+              {response && (
+                <Alert variant={response.variant}>{response.desc}</Alert>
+              )}
 
               <Button
                 disabled={loading}

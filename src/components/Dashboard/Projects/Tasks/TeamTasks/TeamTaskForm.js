@@ -49,13 +49,16 @@ export default function TeamTaskForm(props) {
         commentRef.current.value,
         props.assigned
       ).then((res) => {
-        setResponse("Successfully submitted appraisal.");
+        setResponse({
+          desc: "Successfully submitted appraisal!",
+          variant: "success",
+        });
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
-      setResponse("There was an issue submitting your appraisal.");
+      setResponse({ desc: "Oh no! There's been an error", variant: "danger" });
       setLoading(false);
       return err.message;
     }
@@ -95,7 +98,9 @@ export default function TeamTaskForm(props) {
                   />
                 </FloatingLabel>
               </Form.Group>
-              {response && <Alert variant="success">{response}</Alert>}
+              {response && (
+                <Alert variant={response.variant}>{response.desc}</Alert>
+              )}
 
               <Row>
                 <Col md="auto">

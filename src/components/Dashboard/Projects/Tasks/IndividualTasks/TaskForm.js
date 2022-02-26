@@ -1,5 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, FloatingLabel, Spinner } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  FloatingLabel,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
 
 import { useAuth } from "../../../../../contexts/AuthContext";
 
@@ -10,6 +17,7 @@ export default function TaskForm() {
 
   const { createTask, teamMembers } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -21,11 +29,13 @@ export default function TaskForm() {
         "Active",
         assignedRef.current.value
       ).then((res) => {
+        setResponse({ desc: "Successfully created task!", variant: "success" });
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
+      setResponse({ desc: "Oh no! There's been an error", variant: "danger" });
       setLoading(false);
       return err.message;
     }
@@ -74,6 +84,9 @@ export default function TaskForm() {
                   </Form.Select>
                 </FloatingLabel>
               </Form.Group>
+              {response && (
+                <Alert variant={response.variant}>{response.desc}</Alert>
+              )}
               <Button disabled={loading} className="w-100 mt-3" type="submit">
                 Create Task &nbsp;
                 <Spinner

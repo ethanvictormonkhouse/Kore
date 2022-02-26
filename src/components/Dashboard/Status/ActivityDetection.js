@@ -4,7 +4,7 @@ import { useIdleTimer } from "react-idle-timer";
 
 export default function ActivityDetection() {
   const [lastStatus, setLastStatus] = useState("Available");
-  const timeOutMins = 1;
+  const timeOutMins = 5;
   const { currentUser, currentUserStatus, updateStatus } = useAuth();
   if (Notification.permission !== "granted") Notification.requestPermission();
 
@@ -23,11 +23,14 @@ export default function ActivityDetection() {
   const handleOnIdle = (event) => {
     showNotification();
     setLastStatus(currentUserStatus.status); //store current status
-    updateStatus(currentUser.uid, "Away", ""); //update status to away
+    currentUserStatus.status !== "In A Call" &&
+      updateStatus(currentUser.uid, "Away", ""); //update status to away
   };
 
   const handleOnActive = (event) => {
     if (lastStatus === "Busy") updateStatus(currentUser.uid, "Busy", "");
+    else if (lastStatus === "In A Call")
+      updateStatus(currentUser.uid, "In A Call", "");
     //if last status was busy, set to busy
     else updateStatus(currentUser.uid, "Available", ""); //else set to available'
   };

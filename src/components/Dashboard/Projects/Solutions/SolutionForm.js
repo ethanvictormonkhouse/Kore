@@ -28,13 +28,16 @@ export default function SolutionForm(props) {
         props.task,
         solutionRef.current.value
       ).then((res) => {
-        setResponse("Successfully submitted solution.");
+        setResponse({
+          desc: "Successfully submitted solution!",
+          variant: "success",
+        });
         setLoading(false);
         return res;
       });
     } catch (err) {
       console.log(err.message);
-      setResponse("There was an issue submitting your solution.");
+      setResponse({ desc: "Oh no! There's been an error", variant: "danger" });
       setLoading(false);
       return err.message;
     }
@@ -70,7 +73,9 @@ export default function SolutionForm(props) {
                   />
                 </FloatingLabel>
               </Form.Group>
-              {response && <Alert variant="success">{response}</Alert>}
+              {response && (
+                <Alert variant={response.variant}>{response.desc}</Alert>
+              )}
 
               <Button
                 disabled={loading}

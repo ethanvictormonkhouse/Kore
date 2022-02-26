@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { ButtonGroup, ToggleButton } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

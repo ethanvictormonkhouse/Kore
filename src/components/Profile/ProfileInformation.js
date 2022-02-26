@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { Card, Row, Col, Image } from "react-bootstrap";
+import { Card, Col, Image } from "react-bootstrap";
 
 import Greeting from "../Dashboard/Header/Greeting";
 import VFPDetails from "./VFPDetails";
