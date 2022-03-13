@@ -1,4 +1,5 @@
 import React from "react";
+import TimeAgo from "react-timeago";
 import { Card, Image, Row, Col, Badge, Container } from "react-bootstrap";
 import { useAuth } from "../../../contexts/AuthContext";
 
@@ -22,7 +23,7 @@ export default function UserCard(props) {
   return (
     <div>
       <Container>
-        <Card text="dark" className="shadow-sm mb-2">
+        <Card text="dark" className="shadow-sm mb-2 px-3 py-2">
           <Row xs={1} md={1} lg={2}>
             <Col>
               <div className="text-center my-2">
@@ -45,9 +46,16 @@ export default function UserCard(props) {
                 <Badge
                   pill
                   className="text-center"
-                  bg={getStatusStyling(findUserStatus(props.id))}
+                  bg={getStatusStyling(findUserStatus(props.id).status)}
                 >
-                  {findUserStatus(props.id)}
+                  {findUserStatus(props.id).status}
+                </Badge>{" "}
+                <Badge pill className="text-center">
+                  {findUserStatus(props.id).updated && (
+                    <TimeAgo
+                      date={findUserStatus(props.id).updated.seconds * 1000}
+                    />
+                  )}
                 </Badge>
                 <br />
               </div>

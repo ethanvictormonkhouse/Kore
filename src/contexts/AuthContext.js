@@ -21,6 +21,7 @@ import {
   getDocs,
   addDoc,
   updateDoc,
+  Timestamp,
 } from "firebase/firestore";
 import { onDisconnect, onValue, ref, set, remove } from "firebase/database";
 import { ref as sRef, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -133,8 +134,15 @@ export function AuthProvider({ children }) {
   }
   /*----------FIND USER STATUS FUNCTION----------*/
   function findUserStatus(user) {
-    if (userPresence && userPresence[user]) return userPresence[user].status;
-    else return "Offline";
+    if (userPresence && userPresence[user])
+      return {
+        status: userPresence[user].status,
+        updated: userPresence[user].updated,
+      };
+    else
+      return {
+        status: "Offline",
+      };
   }
 
   /*----------FIND USER FUNCTION----------*/
@@ -151,6 +159,7 @@ export function AuthProvider({ children }) {
       assigned_to: assigned_to,
       team: currentUserData.team,
       created_by: auth.currentUser.uid,
+      created_at: Timestamp.fromDate(new Date()),
     });
   }
 
@@ -164,6 +173,7 @@ export function AuthProvider({ children }) {
       solution: "No Current Solution",
       solution_by: "",
       created_by: auth.currentUser.uid,
+      created_at: Timestamp.fromDate(new Date()),
     }).then(async () => {
       return await updateDoc(doc(db, "tasks", task_id), {
         status: "Open Roadblock",
@@ -197,6 +207,7 @@ export function AuthProvider({ children }) {
       comment: comment,
       given_to: given_to,
       created_by: auth.currentUser.uid,
+      created_at: Timestamp.fromDate(new Date()),
     }).then(async () => {
       return await getUserData(given_to).then(async (res) => {
         const promises = [];
@@ -248,11 +259,10 @@ export function AuthProvider({ children }) {
 
   /*----------UPDATE STATUS FUNCTION----------*/
   function updateStatus(user, newStatus, newDesc) {
-    const date = Date.now();
     const status = {
       status: newStatus,
       desc: newDesc,
-      updated: date,
+      updated: Timestamp.fromDate(new Date()),
     };
     set(ref(rtdb, "users/" + user), status);
     setCurrentUserStatus(status);

@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { auth } from "../../../../services/firebase";
+import TimeAgo from "react-timeago";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import RoadblockOptions from "./RoadblockOptions";
@@ -45,6 +46,7 @@ export default function RoadblockCard(props) {
                   task to '<i>{props.title}</i>'
                 </p>
               )}
+              <TimeAgo date={props.created_at.seconds * 1000} />
             </Col>
             <Col md="auto">
               <RoadblockOptions {...props} />
