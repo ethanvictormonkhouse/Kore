@@ -13,7 +13,7 @@ function StatusText() {
         <strong>'{currentUserStatus.status.toLowerCase()}'</strong>.
         <br />
         <Badge className="mt-2">
-          <TimeAgo date={currentUserStatus.updated} />
+          <TimeAgo date={currentUserStatus.updated.seconds * 1000} />
         </Badge>
       </p>
     </div>

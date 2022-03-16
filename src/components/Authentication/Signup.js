@@ -9,6 +9,8 @@ import {
   Col,
   Container,
   Spinner,
+  Tooltip,
+  OverlayTrigger,
 } from "react-bootstrap";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,6 +34,9 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const [teams, setTeams] = useState([{ name: "...", id: "initial" }]);
   const [bases, setBases] = useState([{ name: "...", id: "initial" }]);
+
+  const [show, setShow] = useState(false);
+  const target = useRef(null);
 
   useEffect(
     () =>
@@ -200,17 +205,31 @@ export default function Signup() {
                   <Form.Label>Upload Avatar</Form.Label>
                   <Form.Control ref={avatarRef} type="file" />
                 </Form.Group>
-                <Button disabled className="w-100 mt-4" type="submit">
-                  Sign Up &nbsp;
-                  <Spinner
-                    as="span"
-                    animation="grow"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    hidden={!loading}
-                  />
-                </Button>
+
+                <OverlayTrigger
+                  placement="right-end"
+                  overlay={
+                    <Tooltip id="tooltip-disabled">
+                      The sign up feature currently disabled to prevent
+                      unexpected costs to the developer. Please contact
+                      monkhoue@tcd.ie to receive demo login details.
+                    </Tooltip>
+                  }
+                >
+                  <div>
+                    <Button disabled className="w-100 mt-4" type="submit">
+                      Sign Up &nbsp;
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        hidden={!loading}
+                      />
+                    </Button>
+                  </div>
+                </OverlayTrigger>
               </Form>
             </Card.Body>
           </Card>

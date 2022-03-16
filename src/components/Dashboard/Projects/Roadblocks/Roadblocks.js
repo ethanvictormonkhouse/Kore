@@ -70,6 +70,7 @@ export default function Roadblocks(props) {
               solution={roadblock.solution}
               solution_by={roadblock.solution_by}
               created={roadblock.created_by}
+              created_at={roadblock.created_at}
             />
           ))}
         </div>

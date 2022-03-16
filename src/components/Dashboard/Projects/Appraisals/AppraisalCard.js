@@ -1,4 +1,5 @@
 import React from "react";
+import TimeAgo from "react-timeago";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +26,10 @@ export default function AppraisalCard(props) {
               {props.type === "positive" ? "reward" : "comment"}!{" "}
               <i>'{props.comment}'</i>
               <br />
-              <Badge>{props.task}</Badge>
+              <Badge>{props.task}</Badge>{" "}
+              <Badge>
+                <TimeAgo date={props.created_at.seconds * 1000} />
+              </Badge>
             </Col>
           </Row>
         </Card.Body>

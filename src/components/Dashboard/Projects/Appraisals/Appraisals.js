@@ -45,6 +45,7 @@ export default function Appraisals() {
           task={task.task_title}
           comment={task.comment}
           created={task.created_by}
+          created_at={task.created_at}
         />
       ))}
     </div>

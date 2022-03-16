@@ -28,7 +28,7 @@ export default function VFPDetails() {
       <Stack direction="horizontal" gap={2} className="mt-1">
         {values.map((value) => (
           <OverlayTrigger
-            key={`desc-${value.value}`}
+            key={`desc-${value.title}-${value.value}`}
             placement="top"
             overlay={<Tooltip id={`tooltip-top`}>{value.desc}</Tooltip>}
           >

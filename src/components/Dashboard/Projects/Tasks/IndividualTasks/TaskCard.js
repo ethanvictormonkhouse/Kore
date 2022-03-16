@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Row, Col, Badge } from "react-bootstrap";
 import { useAuth } from "../../../../../contexts/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TimeAgo from "react-timeago";
 import TaskOptions from "./TaskOptions";
 
 export default function TaskCard(props) {
@@ -29,7 +30,13 @@ export default function TaskCard(props) {
               </Badge>{" "}
               <br />
               Status: <Badge>{props.status}</Badge>
+              <br />
+              Created:{" "}
+              <Badge>
+                <TimeAgo date={props.created_at.seconds * 1000} />
+              </Badge>
             </Col>
+
             <Col md="auto">
               <TaskOptions {...props} />
             </Col>

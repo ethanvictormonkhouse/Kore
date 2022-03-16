@@ -46,6 +46,7 @@ export default function Tasks() {
           desc={task.desc}
           status={task.status}
           created={task.created_by}
+          created_at={task.created_at}
         />
       ))}
     </div>
