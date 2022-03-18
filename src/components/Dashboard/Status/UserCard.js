@@ -32,7 +32,8 @@ export default function UserCard(props) {
                   style={{ height: "10vh", width: "auto" }}
                   roundedCircle
                   className={
-                    "border-" + getStatusStyling(findUserStatus(props.id))
+                    "border-" +
+                    getStatusStyling(findUserStatus(props.id).status)
                   }
                   border="5px"
                 />
