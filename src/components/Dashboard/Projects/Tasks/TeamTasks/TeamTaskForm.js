@@ -12,11 +12,14 @@ import {
   Col,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Sentiment from "sentiment";
 
 import { useAuth } from "../../../../../contexts/AuthContext";
 
 export default function TeamTaskForm(props) {
   const commentRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState("");
   const { createAppraisal, findUser } = useAuth();
 
   const appraisals = [
@@ -34,9 +37,23 @@ export default function TeamTaskForm(props) {
     },
   ];
 
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState("");
   const [appraisalType, setAppraisalType] = useState(appraisals[0]);
+
+  function SentiCheck() {
+    const handleClick = () => {
+      const sentiment = new Sentiment();
+      const result = sentiment.analyze(commentRef.current.value);
+      result.comparative >= 0
+        ? setAppraisalType(appraisals[0])
+        : setAppraisalType(appraisals[1]);
+    };
+
+    return (
+      <Button className="w-100" variant="outline-primary" onClick={handleClick}>
+        SentiCheck
+      </Button>
+    );
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -92,7 +109,7 @@ export default function TeamTaskForm(props) {
                 >
                   <Form.Control
                     as="textarea"
-                    rows="6"
+                    rows={6}
                     ref={commentRef}
                     required
                   />
@@ -119,6 +136,9 @@ export default function TeamTaskForm(props) {
                       </ToggleButton>
                     ))}
                   </ButtonGroup>
+                </Col>
+                <Col md="auto">
+                  <SentiCheck />
                 </Col>
                 <Col>
                   <Button
