@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 
 function Clock() {
-  const [clockState, setClockState] = useState();
+  const [localClock, setLocalClock] = useState();
+  const [baseClock, setBaseClock] = useState();
   const [loading, setLoading] = useState(false);
   const { baseData } = useAuth();
 
@@ -10,7 +11,14 @@ function Clock() {
     setLoading(true);
     setInterval(() => {
       const date = new Date();
-      setClockState(date.toLocaleTimeString());
+      const offset = date.getTimezoneOffset();
+      setLocalClock(
+        date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      );
+      date.setMinutes(date.getMinutes() + baseData.tz * 60 + offset);
+      setBaseClock(
+        date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      );
     }, 1000);
     return () => {
       setLoading(false);
@@ -19,9 +27,10 @@ function Clock() {
 
   return (
     <div style={{ fontSize: "12px", margin: "0px" }}>
-      Local Time: <strong>{clockState}</strong> <br />
-      Base: <strong>{baseData.country}</strong> {baseData.region} UTC[
-      {baseData.tz}]
+      Local Time: <strong>{localClock} </strong>
+      {Intl.DateTimeFormat().resolvedOptions().timeZone} <br />
+      Base: <strong>{baseClock} </strong>
+      {baseData.country} [{baseData.region}]
     </div>
   );
 }
