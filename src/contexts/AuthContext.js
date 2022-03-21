@@ -215,6 +215,7 @@ export function AuthProvider({ children }) {
           promises.push(updateVFP(given_to, 3));
           promises.push(updateVFP(auth.currentUser.uid, 1));
         } else {
+          promises.push(updateVFP(auth.currentUser.uid, 1));
           promises.push(updateMultiplier(given_to, 0.25));
         }
 
